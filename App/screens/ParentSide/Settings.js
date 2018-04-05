@@ -16,7 +16,6 @@ class ParentSettings extends Component {
                     onPress={() => this.props.signOut()}
                 />
 
-
             </View>
         );
     }
