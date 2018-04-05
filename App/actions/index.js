@@ -113,7 +113,8 @@ function loadTutorData(dispatch, uid, tutorData) {
         students: [],
         address: tutorData.city,
         subjects: tutorData.subjects,
-        unmatchedStudents: []
+        unmatchedStudents: [],
+        frozen: tutorData.frozen,
     }
 
     getStudentsWithoutTutor().then(res => {
@@ -309,4 +310,3 @@ function compareTimeStamps(a, b) {
 
     return 0;
 }
-

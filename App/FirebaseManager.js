@@ -106,7 +106,8 @@ export function createTutor(uid, name, phoneNumber, experience, degree, subjects
             exp: experience,
             degree: degree,
             subjects: subjects,
-            city: city
+            city: city,
+            frozen: true
         });
         resolve(true);
     })
