@@ -234,12 +234,12 @@ export function getStudentsWithoutTutor() {
 export function connectStudentTutor(student_id, tutor_id, currentStudents) {
     return new Promise((resolve, reject) => {
         firebase.database().ref('tutors/' + tutor_id).update({
-            frozen: false, // "frozen" is true if they haven't been matched with a student yet
+            frozen: true, // "frozen" is true if they haven't been matched with a student yet
             students: currentStudents
         });
 
         firebase.database().ref('students/' + student_id).update({
-            frozen: false, // "frozen" is true if they haven't been matched with a tutor yet
+            frozen: true, // "frozen" is true if they haven't been matched with a tutor yet
             tutor: tutor_id
         });
 
@@ -324,5 +324,3 @@ export function loadMessages(convoKey) {
 
 
 }
-
-
