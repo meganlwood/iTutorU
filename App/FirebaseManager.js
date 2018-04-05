@@ -236,7 +236,7 @@ export function connectStudentTutor(student_id, tutor_id, currentStudents) {
         firebase.database().ref('tutors/' + tutor_id).update({
             students: currentStudents
         });
-
+        // megan's comment
         firebase.database().ref('students/' + student_id).update({
             tutor: tutor_id
         });
