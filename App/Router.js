@@ -23,6 +23,7 @@ import SignUpParent from "./screens/auth/SignUpParent";
 import SignUpTutor from "./screens/auth/SignUpTutor";
 import ParentLPHome from "./screens/ParentSide/ParentLPHome";
 import ParentSettings from "./screens/ParentSide/Settings";
+import SelectAvailability from "./screens/auth/SelectAvailability";
 
 const TutorHomeStack = StackNavigator({
     Home: { screen: TutorHome },
@@ -40,22 +41,35 @@ const TutorSettingsStack = StackNavigator({
     SelectStudent: { screen: SelectStudent }
 })
 
-const ParentHomeStack = StackNavigator({
-    Home: { screen: ParentHome },
-    Messaging: { screen: Messaging },
-    SignUp: { screen: SignUpParent }
-});
+
 
 const ParentLearningPlanStack = StackNavigator({
     LPHome: { screen: ParentLPHome, navigationOptions: { title: "Learning Plans"}},
     LearningPlan: { screen: LearningPlan }
 });
 
+const SignUpStack = StackNavigator(
+    {
+        SignUpParent: { screen: SignUpParent},
+        SelectAvailability: { screen: SelectAvailability }
+    },
+    {
+        headerMode: 'none',
+        mode: 'modal',
+    }
+);
+
+const ParentHomeStack = StackNavigator({
+    Home: { screen: ParentHome },
+    Messaging: { screen: Messaging },
+    SignUp: { screen: SignUpStack }
+});
+
 const AuthStack = StackNavigator(
     {
         Login: { screen: LoginScreen },
         CreateAccount: { screen: CreateAccount },
-        SignUpParent: { screen: SignUpParent },
+        SignUpParent: { screen: SignUpStack },
         SignUpTutor: { screen: SignUpTutor }
     },
     {

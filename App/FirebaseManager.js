@@ -113,7 +113,7 @@ export function createTutor(uid, name, phoneNumber, experience, degree, subjects
     })
 }
 
-export function createStudent(parentUID, studentName, subject, grade, address) {
+export function createStudent(parentUID, studentName, subject, grade, address, availability) {
     // Set student's information
 
     var defaultLP = {
@@ -146,6 +146,7 @@ export function createStudent(parentUID, studentName, subject, grade, address) {
             grade: grade,
             address: address,
             learningPlan: defaultLP,
+            availability: availability
         })
 
         // Add student to parent
