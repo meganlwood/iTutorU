@@ -203,10 +203,10 @@ function loadParentData(dispatch, uid, res) {
 
 
 
-export function signUpParent(uid, parentName, phoneNumber, studentName, subject, grade, address) {
+export function signUpParent(uid, parentName, phoneNumber, studentName, subject, grade, address, availability) {
     return (dispatch) => {
         createParent(uid, parentName, phoneNumber).then(() => {
-            createStudent(uid, studentName, subject, grade, address).then(() => {
+            createStudent(uid, studentName, subject, grade, address, availability).then(() => {
                 getParent(uid).then(res => {
                     loadParentData(dispatch, uid, res);
                     dispatch({ type: SIGN_IN_SUCCESS_PARENT });
