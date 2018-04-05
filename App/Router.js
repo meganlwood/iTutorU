@@ -24,6 +24,7 @@ import SignUpParent from "./screens/auth/SignUpParent";
 import SignUpTutor from "./screens/auth/SignUpTutor";
 import ParentLPHome from "./screens/ParentSide/ParentLPHome";
 import ParentSettings from "./screens/ParentSide/Settings";
+import SelectAvailability from "./screens/auth/SelectAvailability";
 
 const TutorHomeStack = StackNavigator({
     Home: { screen: TutorHome },
@@ -53,6 +54,17 @@ const ParentLearningPlanStack = StackNavigator({
     LPHome: { screen: ParentLPHome, navigationOptions: { title: "Learning Plans"}},
     LearningPlan: { screen: LearningPlan }
 });
+
+const SignUpStack = StackNavigator(
+    {
+        SignUpParent: { screen: SignUpParent},
+        SelectAvailability: { screen: SelectAvailability }
+    },
+    {
+        headerMode: 'none',
+        mode: 'modal',
+    }
+);
 
 const AuthStack = StackNavigator(
     {
@@ -203,7 +215,7 @@ export class Router extends Component {
             return(
                 <View>
 
-                    <Text>Loading...</Text>
+                    <Text style={{marginTop: 250, marginLeft: 25, marginRight: 25, textAlign: 'center'}}>Loading...</Text>
 
                 </View>
             );
