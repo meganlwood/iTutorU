@@ -18,6 +18,7 @@ import LearningPlan from "./screens/LearningPlan";
 import CalendarScreen from './screens/CalendarScreen';
 import TutorSettings from './screens/TutorSide/Settings';
 import SelectStudent from "./screens/TutorSide/SelectStudent";
+import SelectTime from './screens/TutorSide/SelectTime';
 import CreateAccount from './screens/auth/CreateAccount';
 import SignUpParent from "./screens/auth/SignUpParent";
 import SignUpTutor from "./screens/auth/SignUpTutor";
@@ -27,7 +28,8 @@ import ParentSettings from "./screens/ParentSide/Settings";
 const TutorHomeStack = StackNavigator({
     Home: { screen: TutorHome },
     Messaging: { screen: Messaging },
-    SelectStudent: { screen: SelectStudent }
+    SelectStudent: { screen: SelectStudent },
+    SelectTime: { screen: SelectTime }
 });
 
 const TutorLearningPlanStack = StackNavigator({
@@ -37,7 +39,8 @@ const TutorLearningPlanStack = StackNavigator({
 
 const TutorSettingsStack = StackNavigator({
     Settings: { screen: TutorSettings },
-    SelectStudent: { screen: SelectStudent }
+    SelectStudent: { screen: SelectStudent },
+    SelectTime: { screen: SelectTime }
 })
 
 const ParentHomeStack = StackNavigator({
