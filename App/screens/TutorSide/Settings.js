@@ -9,9 +9,24 @@ class TutorSettings extends Component {
 
 
     render() {
+      if (this.props.data.frozen === true) {
+        return (
+          <View style={styles.container}>
+            <Button
+                title={"Sign Out"}
+                onPress={() => this.props.signOut()}
+            />
+          </View>
+        );
+      }
+
         return(
             <View style={styles.container}>
-                <Text>Tutor settings</Text>
+
+                <Button
+                  title={"Approve Timesheet"}
+                  onPress={() => console.log("approving timesheet")}
+                />
 
                 <Button
                     title={"Find New Students"}
@@ -41,7 +56,7 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state, props) {
     return {
-
+      data: state.tutorReducer.data
     }
 }
 

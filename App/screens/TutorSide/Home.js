@@ -30,6 +30,7 @@ class TutorHome extends Component {
     componentWillReceiveProps(nextProps) {
         console.log("will receive");
         console.log(nextProps);
+        this.setState({ refreshing: false });
     }
 
     renderCards(students) {
@@ -61,8 +62,20 @@ class TutorHome extends Component {
     }
 
     render() {
+      if (this.props.data.frozen === true) {
+        return (<View>
+          <Text style={{fontStyle: 'italic', textAlign: 'center', marginTop: 150}}>Once you are approved by our team, you will be able to choose students to tutor and see their info here!</Text>
+          </View>);
+      }
+
         return(
-            <ScrollView style={{ paddingBottom: 10 }}>
+            <ScrollView style={{ paddingBottom: 10 }}
+              refreshControl={
+                <RefreshControl
+                  refreshing={this.state.refreshing}
+                  onRefresh={this.handleReRender}
+                />
+              }>
 
                 {this.renderCards(this.props.students)}
 
@@ -107,7 +120,7 @@ const styles = {
         height: 150,
         alignSelf: 'center',
         borderRadius: 30
-    }
+    },
 
 }
 
