@@ -7,86 +7,66 @@ import {connect} from "react-redux";
 import {connectStudentTutor} from "../../FirebaseManager";
 
 class SelectTime extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      availableTimes: this.props.navigation.state.params.studentData.availability,
+      checked: [],
+      numChecked: 0,
+      studentId: this.props.navigation.state.params.studentData.key
+    }
+  }
 
     componentWillMount() {
         console.log("select time props");
         console.log(this.props);
-    }
-
-    // renderCards(students) {
-    //     if (!Array.isArray(students)) {
-    //         return null;
-    //     }
-    //
-    //     return students.map((student, i) => {
-    //         return <Card title={`Student`} key={i}>
-    //             <Text >Grade: {student.grade}</Text>
-    //             <Text >Subject: {student.subject}</Text>
-    //             <Text >City: {student.city}</Text>
-    //             <Text >Availability: N/A</Text>
-    //
-    //
-    //             <Button
-    //                 buttonStyle={styles.buttonStyle}
-    //                 title={`See Student Availability`}
-    //                 onPress={() =>  {
-    //
-    //                     var arr = this.props.currentStudents;
-    //                     console.log("current students: ");
-    //                     console.log(arr);
-    //                     if (typeof arr == "undefined") {
-    //                         arr = [];
-    //                     }
-    //                     arr.push(student.key);
-    //
-    //                     connectStudentTutor(student.key, this.props.uid, arr);
-    //                     this.props.navigation.state.params.onNavigateBack(this);
-    //                     this.props.navigation.goBack();
-    //                 }}
-    //             />
-    //
-    //         </Card>
-    //     })
-    // }
+      }
 
     renderAvailability(times) {
+      let total = -1;
       return times.map((time, i) => {
-
-          return (<CheckBox title={time} checked={this.state.checked}
+          this.state.checked.push(false);
+          let count = total + 1;
+          total++;
+          return (<CheckBox title={time} checked={this.state.checked[count]}
                 onPress={() => {
-                  console.log(time + " checked");
-                  // IF SELECTED NOW:
-                  // add this time to an array of times
-                  // increment count
-                  // ELSE:
-                  // remove from array of times
-                  // decrement count
+                  let check = this.state.numChecked;
+                  let arr = this.state.checked;
+                  if (this.state.checked[count] === false) {
+                    check += 1;
+                    arr[count] = true;
+                  } else {
+                    check -= 1;
+                    arr[count] = false;
+                  }
+                  this.setState({numChecked: check, checked: arr})
                 }} />);
       });
     }
 
+    onChooseTimes() {
+
+
+    }
+
     render() {
+      console.log(this.props.navigation);
         return(
             <ScrollView>
-              {this.renderAvailability(["Mon 3 - 4 pm", "Tues 7 - 8 pm", "Wed 3 - 4 pm"])}
-              <Button style={styles.standardButton} disabled={true} // want this enabled when count is valid, disabled when not
+              {this.renderAvailability(this.state.availableTimes)}
+              <Button style={styles.standardButton} disabled={this.state.numChecked !== 1 && this.state.numChecked !== 2} // want this enabled when count is valid, disabled when not
                     title={'Tutor Student at Selected Times'}
                     onPress={() => {
                       // only enabled when the correct number of times are selected
                       var arr = this.props.currentStudents;
-                      console.log("current students: ");
-                      console.log(arr);
                       if (typeof arr == "undefined") {
                           arr = [];
                       }
-                      arr.push(student.key);
+                      arr.push(this.state.studentId);
 
-                      connectStudentTutor(student.key, this.props.uid, arr);
-                      setTimeout(function() {
-                        this.props.navigation.state.params.onNavigateBack(this);
-                        this.props.navigation.goBack();
-                      }, 500);
-                      this.props.navigation.goBack();
+                      connectStudentTutor(this.state.studentId, this.props.uid, arr);
+                      this.props.navigation.navigate('Home');
+
                     }}
                 />
             </ScrollView>
@@ -122,9 +102,9 @@ const styles = {
 
 // we want to have the tutor data and the student data
 function mapStateToProps(state, props) {
-    return {
+    return  {
         currentStudents: state.tutorReducer.studentIDs,
-        uid: state.tutorReducer.data.uid,
+        uid: state.tutorReducer.data.uid
         //student: // todo
     }
 }
