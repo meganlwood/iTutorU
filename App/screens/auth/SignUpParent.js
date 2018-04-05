@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, KeyboardAvoidingView, ScrollView } from 'react-native';
-import { Button } from 'react-native-elements';
+import { View, Text, StyleSheet, KeyboardAvoidingView, ScrollView, Button as RNButton } from 'react-native';
+import { Button, Card } from 'react-native-elements';
 
 import * as Actions from "../../actions";
 import {bindActionCreators} from "redux";
@@ -17,23 +17,35 @@ class SignUpParent extends Component {
         grade: '',
         address: '',
         uid: '',
+        goBack: false,
+        availability: [],
     }
 
 
     componentWillMount() {
+        console.log("SIGNUPPARENT PARAMS");
+        console.log(this.props.navigation.state.params);
+
         const { uid, goBack } = this.props.navigation.state.params;
         this.setState({ uid, goBack });
     }
 
     onPressSignUp() {
-        const { uid, studentName, parentName, phone, subject, grade, address } = this.state;
+        const { uid, studentName, parentName, phone, subject, grade, address, availability } = this.state;
 
         // TODO: validate all forms filled out
-        this.props.signUpParent(uid, parentName, phone, studentName, subject, grade, address);
+        this.props.signUpParent(uid, parentName, phone, studentName, subject, grade, address, availability);
+        //this.props.navigation.navigate('SelectAvailability');
 
         if (this.state.goBack) {
             this.props.navigation.goBack();
         }
+    }
+
+    onAvailabilityNavBack(availability) {
+        console.log("availability navback");
+        console.log(availability);
+        this.setState({ availability });
     }
 
 
@@ -79,6 +91,39 @@ class SignUpParent extends Component {
                         secure={false}
                         keyboard={null}
                     />
+                    {this.state.availability.length == 0 &&
+                    <Button
+                        buttonStyle={styles.button}
+                        title={"Select Availability"}
+                        onPress={() => {
+                            console.log("about to navigate...");
+                            this.props.navigation.navigate('SelectAvailability', { callback: this.onAvailabilityNavBack.bind(this) })
+                        }}
+                    />
+                    }
+                    {this.state.availability.length != 0 &&
+                    <Card
+                        title={"Availability"}
+                        containerStyle={{ marginBottom: 20 }}
+                    >
+                        <View style={{ justifyContent: 'center' }}>
+                        {this.state.availability.map((item, index) => {
+                            return (
+                                <Text style={{ alignSelf: 'center', marginBottom: 5, }}>{item}</Text>
+                            )
+                        })}
+                        </View>
+
+                        <RNButton
+                            buttonStyle={styles.button}
+                            title={"Edit Availability"}
+                            onPress={() => this.props.navigation.navigate('SelectAvailability', { data: this.state.availability, callback: this.onAvailabilityNavBack.bind(this)})}
+                        />
+                    </Card>
+
+                    }
+
+
                     <Button
                         buttonStyle={styles.button}
                         title={"Submit"}
