@@ -234,7 +234,6 @@ export function getStudentsWithoutTutor() {
 export function connectStudentTutor(student_id, tutor_id, currentStudents) {
     return new Promise((resolve, reject) => {
         firebase.database().ref('tutors/' + tutor_id).update({
-            // this is a comment
             students: currentStudents
         });
 
