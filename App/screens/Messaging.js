@@ -14,7 +14,6 @@ class Messaging extends Component {
         otherPersonUID: '',
         otherPersonName: '',
         convoKey: '',
-
     };
 
     static navigationOptions = ({ navigation }) => ({
@@ -92,7 +91,7 @@ class Messaging extends Component {
 
         var messages = nextProps.messages[this.state.convoKey];
 
-        //var n = messages.length - this.state.messages.length;
+        //only adds new messages - not sure if this works
         this.addMessages(messages.slice(this.state.messages.length));
     }
 
@@ -101,6 +100,7 @@ class Messaging extends Component {
         console.log("called on send");
         console.log(message);
 
+        //this line is probably not needed
         if (Array.isArray(message)) message = message[0];
 
 
