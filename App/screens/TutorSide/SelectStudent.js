@@ -23,15 +23,13 @@ class SelectStudent extends Component {
                 <Text >Grade: {student.grade}</Text>
                 <Text >Subject: {student.subject}</Text>
                 <Text >City: {student.city}</Text>
-                <Text >Availability: N/A</Text>
 
 
                 <Button
                     buttonStyle={styles.buttonStyle}
                     title={`See Student Availability`}
                     onPress={() =>  {
-                      this.props.navigation.navigate('SelectTime');
-
+                      this.props.navigation.navigate('SelectTime', { studentData: student});
                     }}
                 />
 

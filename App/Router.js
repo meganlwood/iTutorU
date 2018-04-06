@@ -87,9 +87,24 @@ const ForgotPassStack = StackNavigator({
 //     }
 // );
 
+<<<<<<< HEAD
+const SignUpStack = StackNavigator(
+    {
+        SignUpParent: { screen: SignUpParent},
+        SelectAvailability: { screen: SelectAvailability }
+    },
+    {
+        headerMode: 'none',
+        mode: 'modal',
+    }
+);
+
+const AuthStack = StackNavigator(
+=======
 
 
 const AuthStackCard = StackNavigator(
+>>>>>>> ce508d313a0fc5ad19221ef2c6e9f91a7e4412e9
     {
         Login: { screen: LoginScreen },
         SignUpParent: { screen: SignUpStack },
@@ -249,7 +264,7 @@ export class Router extends Component {
             return(
                 <View>
 
-                    <Text>Loading...</Text>
+                    <Text style={{marginTop: 250, marginLeft: 25, marginRight: 25, textAlign: 'center'}}>Loading...</Text>
 
                 </View>
             );
