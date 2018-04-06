@@ -13,7 +13,7 @@ class SelectTime extends Component {
       availableTimes: this.props.navigation.state.params.studentData.availability,
       checked: [],
       numChecked: 0,
-      studentId: this.props.navigation.state.params.studentData.key
+      student: this.props.navigation.state.params.studentData
     }
   }
 
@@ -53,8 +53,9 @@ class SelectTime extends Component {
       console.log(this.props.navigation);
         return(
             <ScrollView>
+              <Text style={styles.headerStyle}>Choose {this.state.student.weeklySessions} {this.state.student.weeklySessions > 1 ? 'Times' : 'Time'}</Text>
               {this.renderAvailability(this.state.availableTimes)}
-              <Button style={styles.standardButton} disabled={this.state.numChecked !== 1 && this.state.numChecked !== 2} // want this enabled when count is valid, disabled when not
+              <Button style={styles.standardButton} disabled={this.state.numChecked != this.state.student.weeklySessions} // want this enabled when count is valid, disabled when not
                     title={'Tutor Student at Selected Times'}
                     onPress={() => {
                       // only enabled when the correct number of times are selected
@@ -62,9 +63,22 @@ class SelectTime extends Component {
                       if (typeof arr == "undefined") {
                           arr = [];
                       }
-                      arr.push(this.state.studentId);
+                      arr.push(this.state.student.key);
 
-                      connectStudentTutor(this.state.studentId, this.props.uid, arr);
+                      let i = 0;
+                      var times = [];
+                      this.state.availableTimes.map((time) => {
+                        let index = i;
+                        if (this.state.checked[index] === true) {
+                          times.push(time);
+                        }
+                        i++;
+                      });
+                      var studentInfo = this.state.student;
+                      studentInfo.chosenTimes = times;
+                      this.setState({student: studentInfo});
+                      console.log(this.state.student);
+                      connectStudentTutor(this.state.student, this.props.uid, arr);
                       this.props.navigation.navigate('Home');
 
                     }}
@@ -96,6 +110,11 @@ const styles = {
     textStyle: {
       color: 'white',
       fontSize: 14,
+    },
+    headerStyle: {
+      fontSize: 18,
+      textAlign: 'center',
+      margin: 5
     }
 }
 
@@ -105,7 +124,6 @@ function mapStateToProps(state, props) {
     return  {
         currentStudents: state.tutorReducer.studentIDs,
         uid: state.tutorReducer.data.uid
-        //student: // todo
     }
 }
 

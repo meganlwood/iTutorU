@@ -113,7 +113,7 @@ export function createTutor(uid, name, phoneNumber, experience, degree, subjects
     })
 }
 
-export function createStudent(parentUID, studentName, subject, grade, address, availability) {
+export function createStudent(parentUID, studentName, subject, grade, address, availability, weeklySess) {
     // Set student's information
 
     var defaultLP = {
@@ -139,6 +139,7 @@ export function createStudent(parentUID, studentName, subject, grade, address, a
     }
 
     return new Promise((resolve, reject) => {
+        console.log("WEEKLY SESSIONS GOING TO DATABASE: " + weeklySess);
         var studentRef = firebase.database().ref('students/').push();
         studentRef.set({
             studentName: studentName,
@@ -146,7 +147,8 @@ export function createStudent(parentUID, studentName, subject, grade, address, a
             grade: grade,
             address: address,
             learningPlan: defaultLP,
-            availability: availability
+            availability: availability,
+            weeklySessions: weeklySess
         })
 
         // Add student to parent
@@ -233,14 +235,14 @@ export function getStudentsWithoutTutor() {
     });
 }
 
-export function connectStudentTutor(student_id, tutor_id, currentStudents) {
+export function connectStudentTutor(student, tutor_id, currentStudents) {
     return new Promise((resolve, reject) => {
         firebase.database().ref('tutors/' + tutor_id).update({
             students: currentStudents
         });
-        // megan's comment #2
-        firebase.database().ref('students/' + student_id).update({
-            tutor: tutor_id
+        firebase.database().ref('students/' + student.key).update({
+            tutor: tutor_id,
+            chosenTimes: student.chosenTimes
         });
 
         resolve(true);

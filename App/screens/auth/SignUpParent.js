@@ -19,6 +19,7 @@ class SignUpParent extends Component {
         uid: '',
         goBack: false,
         availability: [],
+        weeklySess: 1
     }
 
 
@@ -31,10 +32,11 @@ class SignUpParent extends Component {
     }
 
     onPressSignUp() {
-        const { uid, studentName, parentName, phone, subject, grade, address, availability } = this.state;
-
+        const { uid, studentName, parentName, phone, subject, grade, address, availability, weeklySess } = this.state;
         // TODO: validate all forms filled out
-        this.props.signUpParent(uid, parentName, phone, studentName, subject, grade, address, availability);
+        console.log("WEEKLY SESSIONS: " + this.state.weeklySess)
+
+        this.props.signUpParent(uid, parentName, phone, studentName, subject, grade, address, availability, weeklySess);
         //this.props.navigation.navigate('SelectAvailability');
 
         if (this.state.goBack) {
@@ -90,6 +92,17 @@ class SignUpParent extends Component {
                         onChangeText={(text) => this.setState({ address: text })}
                         secure={false}
                         keyboard={null}
+                    />
+                    <SimpleFormComponent
+                        title={"How many sessions per week would you like? (1 or 2)"}
+                        onChangeText={(text) => {
+                          var num = parseInt(text);
+                          this.setState({ weeklySess: num });
+                          console.log("STATE IS: ");
+                          console.log(this.state);
+                        }}
+                        secure={false}
+                        keyboard={'numeric'}
                     />
                     {this.state.availability.length == 0 &&
                     <Button
