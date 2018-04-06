@@ -62,13 +62,31 @@ class TutorHome extends Component {
     }
 
     render() {
-      if (this.props.data.frozen === true) {
+        if (this.props.incomplete_profile) {
+            return (
+                <View>
+                    <Card
+                    title={"Incomplete Profile"}
+                >
+                    <Text>Hey there! We noticed you didn't complete your profile. Until you do so, we won't be able to match you with students. Press the button below to continue!</Text>
+                    <Button
+                        title={"Finish Sign Up"}
+                        onPress={() => this.props.navigation.navigate('SignUp', { uid: this.props.data.uid, goBack: true })}
+                        buttonStyle={styles.buttonStyle}
+                    />
+                </Card>
+
+                </View>
+            );
+        }
+
+      else if (this.props.data.frozen === true) {
         return (<View>
           <Text style={{fontStyle: 'italic', textAlign: 'center', marginTop: 150}}>Once you are approved by our team, you will be able to choose students to tutor and see their info here!</Text>
           </View>);
       }
 
-        return(
+        else return(
             <ScrollView style={{ paddingBottom: 10 }}
               refreshControl={
                 <RefreshControl
@@ -130,6 +148,7 @@ function mapStateToProps(state, props) {
         students: state.tutorReducer.data.students,
         uid: state.tutorReducer.data.uid,
         address: state.tutorReducer.data.address,
+        incomplete_profile: state.tutorReducer.incomplete_profile,
     }
 }
 

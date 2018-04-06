@@ -65,6 +65,30 @@ class SignUpTutor extends Component {
         degree: '',
         city: '',
         selectedItems: [],
+        subjects: [],
+    }
+
+    componentWillMount() {
+        console.log("Signuptutor mounted: ");
+        console.log(this.props.subjects);
+
+        this.setSubjects(this.props.subjects);
+
+    }
+
+    setSubjects(sub) {
+        var subjects = [];
+        for (var i = 0; i < sub.length; i++) {
+            subjects.push({ name: sub[i] });
+        }
+
+        this.setState({ subjects });
+    }
+
+    componentWillReceiveProps(nextProps) {
+        console.log("will receive");
+        console.log(nextProps);
+        this.setSubjects(nextProps.subjects);
     }
 
     onPressSignUp() {
@@ -74,6 +98,10 @@ class SignUpTutor extends Component {
     }
 
     render() {
+        console.log("subjects");
+        console.log(this.state.subjects);
+
+
         return(
             <KeyboardAvoidingView style={{ backgroundColor: 'white', height: '100%'}} behavior={"position"} keyboardVerticalOffset={-60}>
 
@@ -96,7 +124,7 @@ class SignUpTutor extends Component {
                     />
                     <MultipleSelect
                         outerStyle={{ flex: 1, margin: 20}}
-                        items={this.subjects2}
+                        items={this.state.subjects}
                         uniqueKey={"name"}
                         onSelectedItemsChange={(selectedItems) => {
                             this.setState({ selectedItems });
@@ -156,7 +184,7 @@ const styles= StyleSheet.create({
 
 function mapStateToProps(state, props) {
     return {
-
+        subjects: state.authReducer.subjects,
     }
 }
 

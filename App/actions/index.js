@@ -1,7 +1,7 @@
 import {
     getLoggedInUserPromise, getTutor, signIn as FBSignIn, userType, getParent, signOut as FBSignOut,
     getStudentsForTutor, getStudent, getStudentsWithoutTutor, createUser, createParent, createStudent, createTutor,
-    getMessage
+    getMessage, getSubjects
 } from "../FirebaseManager";
 import firebase from "firebase";
 import {generateConvoKey} from "../Util";
@@ -19,6 +19,8 @@ export const INCOMPLETE_PARENT_PROFILE = 'INCOMPLETE_PARENT_PROFILE';
 export const PARENT_DATA = 'PARENT_DATA';
 export const MESSAGES = 'MESSAGES';
 export const NO_MESSAGES = 'NO_MESSAGES';
+export const LOADED_SUBJECTS = 'LOADED SUBJECTS';
+export const INCOMPLETE_TUTOR_PROFILE = 'INCOMPLETE_TUTOR_PROFILE';
 
 // export function loadMessages(convokey) {
 //
@@ -45,6 +47,9 @@ export function isSignedIn() {
                 }
             })
         }).catch(() => {
+            console.log("not logged in. going to grab subjects");
+            loadSubjects(dispatch);
+
             dispatch({ type: NOT_SIGNED_IN });
         })
     }
@@ -107,43 +112,47 @@ function loadTutorData(dispatch, uid, tutorData) {
     console.log(uid);
     console.log(tutorData);
 
-
-    var resdata = {
-        uid: uid,
-        students: [],
-        address: tutorData.city,
-        subjects: tutorData.subjects,
-        unmatchedStudents: [],
-        frozen: tutorData.frozen,
+    if (tutorData.name === "null") {
+        loadSubjects(dispatch);
+        dispatch({ type: INCOMPLETE_TUTOR_PROFILE, data: { uid }});
     }
+    else {
+        var resdata = {
+            uid: uid,
+            students: [],
+            address: tutorData.city,
+            subjects: tutorData.subjects,
+            unmatchedStudents: [],
+            frozen: tutorData.frozen,
+        }
 
-    getStudentsWithoutTutor().then(res => {
-        resdata.unmatchedStudents = res;
-        dispatch({ type: TUTOR_DATA, data: resdata, studentIDs: tutorData.students });
-    })
-
-    var students = tutorData.students;
-
-    for (var i in students) {
-        //console.log("getting " + s);
-        var convoKey = generateConvoKey(uid, students[i]);
-        getStudent(students[i]).then(data => {
-            resdata.students.push({
-                uid: students[i],
-                name: data.studentName,
-                subject: data.subject,
-                address: data.city,
-                learningPlan: data.learningPlan,
-                convoKey: convoKey,
-            });
-
-            if (resdata.students.length === students.length) {
-                dispatch({ type: TUTOR_DATA, data: resdata, studentIDs: tutorData.students });
-            }
+        getStudentsWithoutTutor().then(res => {
+            resdata.unmatchedStudents = res;
+            dispatch({ type: TUTOR_DATA, data: resdata, studentIDs: tutorData.students });
         })
+
+        var students = tutorData.students;
+
+        for (var i in students) {
+            //console.log("getting " + s);
+            var convoKey = generateConvoKey(uid, students[i]);
+            getStudent(students[i]).then(data => {
+                resdata.students.push({
+                    uid: students[i],
+                    name: data.studentName,
+                    subject: data.subject,
+                    address: data.city,
+                    learningPlan: data.learningPlan,
+                    convoKey: convoKey,
+                });
+
+                if (resdata.students.length === students.length) {
+                    dispatch({ type: TUTOR_DATA, data: resdata, studentIDs: tutorData.students });
+                }
+            })
+        }
     }
 
-    //right now this is assuming students is just one student not an array
 }
 
 function loadParentData(dispatch, uid, res) {
@@ -262,6 +271,7 @@ export function signInUser(email, password) {
 export function signOut() {
     return (dispatch) => {
         FBSignOut().then(res => {
+            loadSubjects(dispatch);
             dispatch({ type: NOT_SIGNED_IN });
         })
     }
@@ -309,4 +319,10 @@ function compareTimeStamps(a, b) {
     else return 1;
 
     return 0;
+}
+
+function loadSubjects(dispatch) {
+    getSubjects().then(subjects => {
+        dispatch({ type: LOADED_SUBJECTS, subjects: subjects });
+    });
 }
