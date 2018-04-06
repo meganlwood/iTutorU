@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Button as RNButton, TextInput} from 'react-native';
+import { View, Text, StyleSheet, Button as RNButton, TextInput, Linking} from 'react-native';
 import { Button } from 'react-native-elements';
 import * as Actions from "../../actions";
 import {bindActionCreators} from "redux";
@@ -14,6 +14,11 @@ class ParentSettings extends Component {
                 <Button
                     title={"Sign Out"}
                     onPress={() => this.props.signOut()}
+                />
+
+                <Button
+                    title={"Contact Support"}
+                    onPress={() => Linking.openURL('mailto:info@itutoru.org?subject=App Support&body=')}
                 />
 
             </View>

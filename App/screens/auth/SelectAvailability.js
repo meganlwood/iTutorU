@@ -107,8 +107,6 @@ class SelectAvailability extends Component {
         return(
             <ScrollView>
 
-                <Text>Select Availability</Text>
-
                 {this.renderBoxes()}
 
                 <Button
