@@ -85,25 +85,19 @@ const ForgotPassStack = StackNavigator({
 //         mode: 'modal',
 //     }
 // );
-
-<<<<<<< HEAD
-const SignUpStack = StackNavigator(
-    {
-        SignUpParent: { screen: SignUpParent},
-        SelectAvailability: { screen: SelectAvailability }
-    },
-    {
-        headerMode: 'none',
-        mode: 'modal',
-    }
-);
-
-const AuthStack = StackNavigator(
-=======
-
+// 
+// const SignUpStack = StackNavigator(
+//     {
+//         SignUpParent: { screen: SignUpParent},
+//         SelectAvailability: { screen: SelectAvailability }
+//     },
+//     {
+//         headerMode: 'none',
+//         mode: 'modal',
+//     }
+// );
 
 const AuthStackCard = StackNavigator(
->>>>>>> ce508d313a0fc5ad19221ef2c6e9f91a7e4412e9
     {
         Login: { screen: LoginScreen },
         SignUpParent: { screen: SignUpStack },
