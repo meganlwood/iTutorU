@@ -24,6 +24,7 @@ import SignUpTutor from "./screens/auth/SignUpTutor";
 import ParentLPHome from "./screens/ParentSide/ParentLPHome";
 import ParentSettings from "./screens/ParentSide/Settings";
 import SelectAvailability from "./screens/auth/SelectAvailability";
+import ForgotPassword from "./screens/auth/ForgotPassword";
 
 const TutorHomeStack = StackNavigator({
     Home: { screen: TutorHome },
@@ -41,8 +42,6 @@ const TutorSettingsStack = StackNavigator({
     SelectStudent: { screen: SelectStudent }
 })
 
-
-
 const ParentLearningPlanStack = StackNavigator({
     LPHome: { screen: ParentLPHome, navigationOptions: { title: "Learning Plans"}},
     LearningPlan: { screen: LearningPlan }
@@ -51,7 +50,7 @@ const ParentLearningPlanStack = StackNavigator({
 const SignUpStack = StackNavigator(
     {
         SignUpParent: { screen: SignUpParent},
-        SelectAvailability: { screen: SelectAvailability }
+        SelectAvailability: { screen: SelectAvailability, tabBarHidden: true }
     },
     {
         headerMode: 'none',
@@ -65,16 +64,48 @@ const ParentHomeStack = StackNavigator({
     SignUp: { screen: SignUpStack }
 });
 
-const AuthStack = StackNavigator(
+const ForgotPassStack = StackNavigator({
+    SendEmail: { screen: ForgotPassword }
+}, { headerMode: 'none', mode: 'modal' });
+
+//will be modal
+// const AuthStack = StackNavigator(
+//     {
+//         Login: { screen: LoginScreen },
+//         CreateAccount: { screen: CreateAccount },
+//         SignUpParent: { screen: SignUpStack },
+//         SignUpTutor: { screen: SignUpTutor },
+//         ForgotPassword: { screen: ForgotPassStack }
+//     },
+//     {
+//         headerMode: 'none',
+//         mode: 'modal',
+//     }
+// );
+
+
+
+const AuthStackCard = StackNavigator(
     {
         Login: { screen: LoginScreen },
-        CreateAccount: { screen: CreateAccount },
         SignUpParent: { screen: SignUpStack },
-        SignUpTutor: { screen: SignUpTutor }
+        SignUpTutor: { screen: SignUpTutor },
     },
     {
         headerMode: 'none',
-        mode: 'card',
+        mode: 'card'
+    }
+);
+
+const AuthStackModal = StackNavigator(
+    {
+        Home: AuthStackCard,
+        ForgotPassword: { screen: ForgotPassword },
+        CreateAccount: { screen: CreateAccount },
+    },
+    {
+        headerMode: 'none',
+        mode: 'modal',
     }
 );
 
@@ -161,7 +192,7 @@ const createRouter = ({signedIn, isTutor}) => {
     return StackNavigator(
         {
             LoggedOut: {
-                screen: AuthStack
+                screen: AuthStackModal
             },
             LoggedInTutor: {
                 screen: LoggedInTutor

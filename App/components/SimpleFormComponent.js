@@ -12,6 +12,7 @@ const SimpleFormComponent = (props) => {
                 secureTextEntry={props.secure}
                 keyboardType={props.keyboard}
                 spellCheck={props.spellcheck}
+                value={props.value}
             />
             <FormValidationMessage>{props.errorMessage}</FormValidationMessage>
         </View>

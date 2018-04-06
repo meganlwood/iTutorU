@@ -47,6 +47,10 @@ class LoginScreen extends Component {
         console.log(nextProps);
     }
 
+    onPressForgotPassword() {
+        this.props.navigation.navigate('ForgotPassword', { email: this.state.email });
+    }
+
     render() {
         return(
             <KeyboardAvoidingView style={{ backgroundColor: 'white', height: '100%'}} behavior={"position"} keyboardVerticalOffset={-60}>
@@ -87,7 +91,7 @@ class LoginScreen extends Component {
                     />
                     <RNButton
                         title={"Forgot Password?"}
-                        onPress={() => console.log("Forgot Pass")}
+                        onPress={() => this.onPressForgotPassword()}
                     />
 
                 </View>

@@ -321,6 +321,14 @@ export function loadMessages(convoKey) {
             }
         })
     })
+}
 
-
+export function resetPassword(email) {
+    return new Promise((resolve, reject) => {
+        firebase.auth().sendPasswordResetEmail(email).then(() => {
+            resolve(true);
+        }).catch(error => {
+            reject(error.message);
+        })
+    })
 }
