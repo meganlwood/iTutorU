@@ -1,15 +1,13 @@
 import { combineReducers } from 'redux';
 
-import { DATA_AVAILABLE, SIGN_IN_SUCCESS_TUTOR, SIGN_IN_FAIL, SIGN_IN_SUCCESS_PARENT, IS_SIGNED_IN, NOT_SIGNED_IN, TUTOR_DATA, PARENT_DATA, INCOMPLETE_PARENT_PROFILE, MESSAGES } from "../actions/"
+import { DATA_AVAILABLE, SIGN_IN_SUCCESS_TUTOR, SIGN_IN_FAIL, SIGN_IN_SUCCESS_PARENT, IS_SIGNED_IN, NOT_SIGNED_IN, TUTOR_DATA, PARENT_DATA, INCOMPLETE_PARENT_PROFILE, MESSAGES, LOADED_SUBJECTS, INCOMPLETE_TUTOR_PROFILE } from "../actions/"
 
 //let dataState = { uid: '', data: [], userType: '' };
-let authState = { signedIn: false, userType: '', loaded: false, error: '' };
+let authState = { signedIn: false, userType: '', loaded: false, error: '', subjects: [] };
 
 let tutorData =
     {
         data: {},
-        // TODO: enter in database and pull
-        subjectsMap: {},
         studentIDs: [],
 
         //data has the shape
@@ -69,6 +67,8 @@ const tutorReducer = (state = tutorData, action) => {
         case TUTOR_DATA:
             console.log(action.data);
             return { ...state, data: action.data, studentIDs: action.studentIDs };
+        case INCOMPLETE_TUTOR_PROFILE:
+            return { ...state, incomplete_profile: true, data: action.data }
         default:
             return state;
     }
@@ -83,11 +83,21 @@ const authReducer = (state = authState, action) => {
         case SIGN_IN_SUCCESS_PARENT:
             return { ...state, signedIn: true, userType: 'parent', loaded: true}
         case SIGN_IN_FAIL:
+            if (action.error.match(/.*password.*/)) {
+                action.error = "Incorrect password.";
+            }
+            if (action.error.match(/.*user.*/)) {
+                action.error = "This email does not match any account in our databases.";
+            }
+
+
             return { ...state, signedIn: false, loaded: true, error: action.error }
         case IS_SIGNED_IN:
             return { ...state, signedIn: true, loaded: true, userType: action.userType }
         case NOT_SIGNED_IN:
             return { ...state, signedIn: false, loaded: true }
+        case LOADED_SUBJECTS:
+            return { ...state, subjects: action.subjects }
         default:
             return state;
     }

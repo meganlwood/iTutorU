@@ -31,7 +31,8 @@ const TutorHomeStack = StackNavigator({
     Home: { screen: TutorHome },
     Messaging: { screen: Messaging },
     SelectStudent: { screen: SelectStudent },
-    SelectTime: { screen: SelectTime }
+    SelectTime: { screen: SelectTime },
+    SignUp: { screen: SignUpTutor },
 });
 
 const TutorLearningPlanStack = StackNavigator({

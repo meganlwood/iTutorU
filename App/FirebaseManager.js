@@ -67,6 +67,7 @@ export function createBlankParent(email, password) {
             firebase.database().ref('parents/' + user.uid).set({
                 //Placeholder for how we know there is no account info
                 parentName: "null",
+                email: email,
             });
             resolve(user.uid);
         }).catch(error => {
@@ -79,7 +80,8 @@ export function createBlankTutor(email, password) {
     return new Promise((resolve, reject) => {
         createUser(email, password).then(user => {
             firebase.database().ref('tutors/' + user.uid).set({
-                name: "null"
+                name: "null",
+                email: email,
             });
             resolve(user.uid);
         }).catch(error => {
@@ -331,6 +333,15 @@ export function resetPassword(email) {
             resolve(true);
         }).catch(error => {
             reject(error.message);
+        })
+    })
+}
+
+export function getSubjects() {
+    console.log("getting subjects");
+    return new Promise((resolve, reject) => {
+        firebase.database().ref('subjects').once('value', function(snapshot) {
+            resolve(snapshot.val());
         })
     })
 }

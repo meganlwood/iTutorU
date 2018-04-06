@@ -5,6 +5,7 @@ import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import SimpleFormComponent from "../../components/SimpleFormComponent";
 import {Button} from "react-native-elements";
+import {DotIndicator} from "react-native-indicators";
 
 class LoginScreen extends Component {
 
@@ -15,14 +16,18 @@ class LoginScreen extends Component {
             email: '',
             password: ''
         },
+        loading: false,
         // loading: false,
     }
 
     onPressLogin() {
+        this.setState({ loading: true });
         this.props.signInUser(this.state.email, this.state.password);
     }
 
     onChangeEmail(text) {
+        this.state.errors.password = "";
+
         if (text.match(/.*@.*\..*.*/)) {
             this.state.errors.email = '';
         }
@@ -35,13 +40,20 @@ class LoginScreen extends Component {
     }
 
     onChangePassword(text) {
-        this.setState({ password: text });
+        this.state.errors.password = "";
+        this.state.password = text;
+        this.setState(this.state);
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.signedIn && nextProps.userType == 'tutor') {
-            console.log("Navigating...");
-            this.props.navigation.navigate('LoggedInTutor');
+        // if (nextProps.signedIn && nextProps.userType == 'tutor') {
+        //     console.log("Navigating...");
+        //     this.props.navigation.navigate('LoggedInTutor');
+        // }
+        if (nextProps.signInError != '') {
+            this.state.loading = false;
+            this.state.errors.password = nextProps.signInError;
+            this.setState(this.state);
         }
 
         console.log(nextProps);
@@ -79,6 +91,14 @@ class LoginScreen extends Component {
                     secure={true}
                     keyboard={null}
                 />
+                <View style={{ height: 40, opacity: this.state.loading? 1 : 0, paddingBottom: 20 }}>
+                    <DotIndicator
+                        animating={this.state.loading}
+                        size={15}
+                        color={'#0093ff'}
+                    />
+                </View>
+
                 <Button
                     buttonStyle={styles.button}
                     title={"Sign in"}
@@ -121,6 +141,7 @@ function mapStateToProps(state, props) {
     return {
         signedIn: state.authReducer.signedIn,
         userType: state.authReducer.userType,
+        signInError: state.authReducer.error,
     }
 }
 
