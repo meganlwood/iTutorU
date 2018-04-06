@@ -12,7 +12,7 @@ class TutorSettings extends Component {
       if (this.props.data.frozen === true) {
         return (
           <View style={styles.container}>
-            <Button
+            <Button style={styles.buttonStyle}
                 title={"Sign Out"}
                 onPress={() => this.props.signOut()}
             />
@@ -23,17 +23,17 @@ class TutorSettings extends Component {
         return(
             <View style={styles.container}>
 
-                <Button
+                <Button style={styles.buttonStyle}
                   title={"Approve Timesheet"}
                   onPress={() => console.log("approving timesheet")}
                 />
 
-                <Button
+                <Button style={styles.buttonStyle}
                     title={"Find New Students"}
                     onPress={() => this.props.navigation.navigate('SelectStudent', { onNavigateBack: this.componentDidMount })}
                 />
 
-                <Button
+                <Button style={styles.buttonStyle}
                     title={"Sign Out"}
                     onPress={() => this.props.signOut()}
                 />
@@ -49,8 +49,10 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
         height: '100%',
-        justifyContent: 'space-around',
         flexDirection: 'column',
+    },
+    buttonStyle: {
+      margin: 20
     }
 });
 

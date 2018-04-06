@@ -28,20 +28,10 @@ class SelectStudent extends Component {
 
                 <Button
                     buttonStyle={styles.buttonStyle}
-                    title={`Tutor Student`}
+                    title={`See Student Availability`}
                     onPress={() =>  {
+                      this.props.navigation.navigate('SelectTime');
 
-                        var arr = this.props.currentStudents;
-                        console.log("current students: ");
-                        console.log(arr);
-                        if (typeof arr == "undefined") {
-                            arr = [];
-                        }
-                        arr.push(student.key);
-
-                        connectStudentTutor(student.key, this.props.uid, arr);
-                        this.props.navigation.state.params.onNavigateBack(this);
-                        this.props.navigation.goBack();
                     }}
                 />
 
