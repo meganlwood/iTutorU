@@ -34,6 +34,11 @@ class CreateAccount extends Component {
     }
 
     onChangePassword(password) {
+        if (this.state.errors.email.match(/.*password.*/)) {
+            this.state.errors.email = "";
+        }
+
+        this.setState(this.state);
         this.setState({ password });
     }
 
@@ -53,17 +58,25 @@ class CreateAccount extends Component {
 
 
     onPressParent() {
+        this.setState({ loading: true });
+
         if (this.state.errors.email == "" && this.state.errors.password == "") {
             createBlankParent(this.state.email, this.state.password).then(uid => {
                 this.props.navigation.navigate('SignUpParent', { uid: uid, goBack: false });
             }).catch(error => {
                 this.state.errors.email = error;
+                this.state.loading = false;
                 this.setState(this.state);
             })
+        }
+        else {
+            this.setState({ loading: false });
         }
     }
 
     onPressTutor() {
+        this.setState({ loading: true });
+
         if (this.state.errors.email == "" && this.state.errors.password == "") {
             console.log("attempting to create a tutor");
 
@@ -74,8 +87,12 @@ class CreateAccount extends Component {
                 console.log("there was an error");
                 console.log(error.message);
                 this.state.errors.email = error;
+                this.state.loading = false;
                 this.setState(this.state);
             })
+        }
+        else {
+            this.setState({ loading: false });
         }
     }
 
