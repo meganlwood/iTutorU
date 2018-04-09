@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import * as Actions from "./../../actions";
+import {Card} from "react-native-elements";
 
 class TutorLPHome extends Component {
 
@@ -16,6 +17,17 @@ class TutorLPHome extends Component {
     }
 
     render() {
+
+        if (this.props.data.students.length == 0) {
+            return (
+                <Card
+                    title={"No Students"}
+                >
+                    <Text style={{ alignSelf: 'center' }}>You don't have any students yet.</Text>
+                </Card>
+            );
+        }
+
         return (
             <FlatList
                 data={this.props.data.students}
