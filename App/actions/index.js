@@ -1,6 +1,6 @@
 import {
     getLoggedInUserPromise, getTutor, signIn as FBSignIn, userType, getParent, signOut as FBSignOut,
-    getStudentsForTutor, getStudent, getStudentsWithoutTutor, createUser, createParent, createStudent, createTutor,
+    getStudent, getStudentsWithoutTutor, createParent, createStudent, createTutor,
     getMessage, getSubjects
 } from "../FirebaseManager";
 import firebase from "firebase";
@@ -22,11 +22,8 @@ export const NO_MESSAGES = 'NO_MESSAGES';
 export const LOADED_SUBJECTS = 'LOADED SUBJECTS';
 export const INCOMPLETE_TUTOR_PROFILE = 'INCOMPLETE_TUTOR_PROFILE';
 
-// export function loadMessages(convokey) {
-//
-// }
 
-//called from router
+// Called from Router. First action called when the app opens. Checks if the user is logged in, and if so loads the appropriate data.
 export function isSignedIn() {
     return (dispatch) => {
         getLoggedInUserPromise().then(user => {
@@ -39,60 +36,47 @@ export function isSignedIn() {
                 }
                 else if (type === 'parent') {
                     getParent(user.uid).then(res => {
-                        console.log("get parent res: ");
-                        console.log(res);
                         dispatch({ type: IS_SIGNED_IN, userType: 'parent', data: res, uid: user.uid });
                         loadParentData(dispatch, user.uid, res);
                     })
                 }
             })
         }).catch(() => {
-            console.log("not logged in. going to grab subjects");
             loadSubjects(dispatch);
-
             dispatch({ type: NOT_SIGNED_IN });
         })
     }
 
 }
 
+// Function for loading Tutor Data when user uid is not known
 export function loadUserThenTutorData() {
-    console.log("load user then tutor data");
     return (dispatch) => {
-        console.log("inside dispatch");
         getLoggedInUserPromise().then(user => {
             getTutor(user.uid).then(res => {
-                console.log("tutor res: ");
-                console.log(res);
                 loadTutorData(dispatch, user.uid, res);
             }).catch(error => {
-                console.log("THERE WAS AN ERROR AND WE COULDN'T LOAD TUTOR DATA");
                 console.log(error);
             })
         })
     }
 }
 
+// Function for loading Parent Data when user uid is not known
 export function loadUserThenParentData() {
-    console.log("load user then parent data");
     return (dispatch) => {
-        console.log("inside dispatch");
         getLoggedInUserPromise().then(user => {
             getParent(user.uid).then(res => {
-                console.log("was able to get parent");
-                console.log(res);
-
                 loadParentData(dispatch, user.uid, res);
             })
         }).catch(error => {
-            console.log("THERE WAS AN ERROR AND WE COULDN'T LOAD PARENT DATA");
             console.log(error);
         });
 
     }
 }
 
-//called from signIn function above
+// Internal function to load Tutor Data
 function loadTutorData(dispatch, uid, tutorData) {
     /*
         uid: '',
@@ -107,11 +91,8 @@ function loadTutorData(dispatch, uid, tutorData) {
         address: '',
         subjects: []
      */
-    console.log("args: ");
-    console.log(dispatch);
-    console.log(uid);
-    console.log(tutorData);
 
+    // If name="null", this means the tutor has created an account, but does not have a completed application.
     if (tutorData.name === "null") {
         loadSubjects(dispatch);
         dispatch({ type: INCOMPLETE_TUTOR_PROFILE, data: { uid }});
@@ -134,7 +115,6 @@ function loadTutorData(dispatch, uid, tutorData) {
         var students = tutorData.students;
 
         for (var i in students) {
-            //console.log("getting " + s);
             var convoKey = generateConvoKey(uid, students[i]);
             getStudent(students[i]).then(data => {
                 resdata.students.push({
@@ -155,11 +135,8 @@ function loadTutorData(dispatch, uid, tutorData) {
 
 }
 
-function loadParentData(dispatch, uid, res) {
-    console.log("res in loadparentdata: ");
-    console.log(res);
-
-    var studentArr = res.students;
+function loadParentData(dispatch, uid, parentData) {
+    var studentArr = parentData.students;
 
     //finish this
     var resdata = {
@@ -169,24 +146,25 @@ function loadParentData(dispatch, uid, res) {
                 // uid: '',
                 // tutor: {
                 //     uid: '',
-                //     name: ''
+                //     name: '',
+                //     convoKey: '',
                 // }
             //}
         ],
 
     }
 
-    if (res.parentName === "null") {
+    if (parentData.parentName === "null") {
         dispatch({ type: INCOMPLETE_PARENT_PROFILE, data: { uid } });
     }
     else {
+        // Load each student's information
         for (var i = 0; i < studentArr.length; i++) {
             var studentID = studentArr[i];
             getStudent(studentID).then(studentRes => {
                 var tutorUID = studentRes.tutor;
                 studentRes.uid = studentID;
                 if (tutorUID) {
-                    console.log("getting tutor");
                     getTutor(tutorUID).then(tutorRes => {
                         var convoKey = generateConvoKey(studentID, tutorUID);
                         studentRes.tutor = { uid: tutorUID, name: tutorRes.name, convoKey: convoKey };
@@ -197,7 +175,6 @@ function loadParentData(dispatch, uid, res) {
                     })
                 }
                 else {
-                    console.log("no tutor");
                     resdata.students.push(studentRes);
                     console.log(resdata);
                     if (resdata.students.length == studentArr.length) {
@@ -211,7 +188,7 @@ function loadParentData(dispatch, uid, res) {
 }
 
 
-
+// Called when a parent completes their profile.
 export function signUpParent(uid, parentName, phoneNumber, studentName, subject, grade, address, availability, weeklySess) {
     return (dispatch) => {
         createParent(uid, parentName, phoneNumber).then(() => {
@@ -225,6 +202,7 @@ export function signUpParent(uid, parentName, phoneNumber, studentName, subject,
     }
 }
 
+// Called when a tutor completes their application.
 export function signUpTutor(uid, name, phoneNumber, experience, degree, subjects, city) {
     return (dispatch) => {
         createTutor(uid, name, phoneNumber, experience, degree, subjects, city).then(() => {
@@ -236,17 +214,12 @@ export function signUpTutor(uid, name, phoneNumber, experience, degree, subjects
     }
 }
 
-
+// Called from LoginScreen
 export function signInUser(email, password) {
-
     return (dispatch) => {
         FBSignIn(email, password).then(user => {
-            console.log("id: " + user.uid);
             userType(user.uid).then(type => {
-                console.log(type);
                 if (type === 'tutor') {
-                    console.log("dispatched");
-                    //loadUserThenTutorData();
                     getTutor(user.uid).then(data => {
                         loadTutorData(dispatch, user.uid, data);
                     })
@@ -260,14 +233,12 @@ export function signInUser(email, password) {
                 }
              })
         }).catch(error => {
-            console.log("can't sign in");
-            console.log(error);
-
             dispatch({ type: SIGN_IN_FAIL, error: error });
         })
     }
 }
 
+// Signs out currently logged in user.
 export function signOut() {
     return (dispatch) => {
         FBSignOut().then(res => {
@@ -277,8 +248,8 @@ export function signOut() {
     }
 }
 
+// Load messages between two users (identified by convokey).
 export function loadMessages(convoKey) {
-    console.log("in load messages");
     return (dispatch) => {
         firebase.database().ref('conversations/' + convoKey).on('value', function(snapshot) {
             if (snapshot.val() != null) {
@@ -312,6 +283,14 @@ export function loadMessages(convoKey) {
 
 }
 
+// Loads the subjects for the Tutor sign up form.
+function loadSubjects(dispatch) {
+    getSubjects().then(subjects => {
+        dispatch({ type: LOADED_SUBJECTS, subjects: subjects });
+    });
+}
+
+// Function used to sort messages by timestamp.
 function compareTimeStamps(a, b) {
     if (a.timestamp < b.timestamp) {
         return -1;
@@ -321,8 +300,4 @@ function compareTimeStamps(a, b) {
     return 0;
 }
 
-function loadSubjects(dispatch) {
-    getSubjects().then(subjects => {
-        dispatch({ type: LOADED_SUBJECTS, subjects: subjects });
-    });
-}
+
