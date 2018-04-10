@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, KeyboardAvoidingView, ScrollView, Button as RNButton } from 'react-native';
-import { Button, Card } from 'react-native-elements';
+import { Button, Card, ButtonGroup } from 'react-native-elements';
 
 import * as Actions from "../../actions";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import SimpleFormComponent from "../../components/SimpleFormComponent";
 
-class SignUpParent extends Component {
 
-    state = {
+class SignUpParent extends Component {
+  constructor(props) {
+    super(props);
+    this.onUpdateFields = this.onUpdateFields.bind(this);
+    this.state = {
         studentName: '',
         parentName: '',
         phone: '',
@@ -19,9 +22,11 @@ class SignUpParent extends Component {
         uid: '',
         goBack: false,
         availability: [],
-        weeklySess: 1
-    }
-
+        weeklySess: 0,
+        canSubmit: false,
+        selectedIndex: 0
+    };
+  }
 
     componentWillMount() {
         console.log("SIGNUPPARENT PARAMS");
@@ -33,15 +38,20 @@ class SignUpParent extends Component {
 
     onPressSignUp() {
         const { uid, studentName, parentName, phone, subject, grade, address, availability, weeklySess } = this.state;
-        // TODO: validate all forms filled out
-        console.log("WEEKLY SESSIONS: " + this.state.weeklySess)
-
         this.props.signUpParent(uid, parentName, phone, studentName, subject, grade, address, availability, weeklySess);
-        //this.props.navigation.navigate('SelectAvailability');
+        this.props.navigation.goBack();
+    }
 
-        if (this.state.goBack) {
-            this.props.navigation.goBack();
-        }
+    onUpdateFields() {
+      console.log("CHECKING: ");
+      console.log(this.state);
+      if (this.state.studentName == '' || this.state.parentName == '' || this.state.phone == '' || this.state.subject == '' || this.state.grade == '' || this.state.address == '') {
+        this.setState({canSubmit: false});
+      } else if (this.state.weeklySess != 1 && this.state.weeklySess != 2) {
+        this.setState({canSubmit: false});
+      } else {
+        this.setState({canSubmit: true});
+      }
     }
 
     onAvailabilityNavBack(availability) {
@@ -59,50 +69,65 @@ class SignUpParent extends Component {
                     <Text style={styles.title}>New Student Sign Up</Text>
                     <SimpleFormComponent
                         title={"Full Name (Parent)"}
-                        onChangeText={(text) => this.setState({ parentName: text })}
+                        onChangeText={(text) => {
+                          this.setState({ parentName: text });
+                          this.onUpdateFields();
+                        }}
                         secure={false}
                         keyboard={null}
                     />
                     <SimpleFormComponent
                         title={"Full Name (Student)"}
-                        onChangeText={(text) => this.setState({ studentName: text })}
+                        onChangeText={(text) => {
+                          this.setState({ studentName: text })
+                          this.onUpdateFields();
+                        }}
                         secure={false}
                         keyboard={null}
                     />
                     <SimpleFormComponent
                         title={"Phone Number"}
-                        onChangeText={(text) => this.setState({ phone: text })}
+                        onChangeText={(text) => {
+                          this.setState({ phone: text });
+                          this.onUpdateFields();
+                        }}
                         secure={false}
                         keyboard={'phone-pad'}
                     />
                     <SimpleFormComponent
                         title={"Subject(s)"}
-                        onChangeText={(text) => this.setState({ subject: text })}
+                        onChangeText={(text) => {
+                          this.setState({ subject: text });
+                          this.onUpdateFields();
+                        }}
                         secure={false}
                         keyboard={null}
                     />
                     <SimpleFormComponent
                         title={"Student's Grade"}
-                        onChangeText={(text) => this.setState({ grade: text })}
+                        onChangeText={(text) => {
+                          this.setState({ grade: text });
+                          this.onUpdateFields();
+                        }}
                         secure={false}
                         keyboard={'numeric'}
                     />
                     <SimpleFormComponent
                         title={"Address"}
-                        onChangeText={(text) => this.setState({ address: text })}
+                        onChangeText={(text) => {
+                          this.setState({ address: text });
+                          this.onUpdateFields();
+                        }}
                         secure={false}
                         keyboard={null}
                     />
-                    <SimpleFormComponent
-                        title={"How many sessions per week would you like? (1 or 2)"}
-                        onChangeText={(text) => {
-                          var num = parseInt(text);
-                          this.setState({ weeklySess: num });
-                          console.log("STATE IS: ");
-                          console.log(this.state);
-                        }}
-                        secure={false}
-                        keyboard={'numeric'}
+                    <ButtonGroup containerStyle={{marginTop: 10, marginBottom: 20, marginRight: 20, marginLeft: 20}}
+                      onPress={(index) => {
+                        this.setState({selectedIndex: index, weeklySess: index+1});
+                        this.onUpdateFields();
+                      }}
+                      selectedIndex={this.state.selectedIndex}
+                      buttons={['1', '2']}
                     />
                     {this.state.availability.length == 0 &&
                     <Button
@@ -139,6 +164,7 @@ class SignUpParent extends Component {
 
                     <Button
                         buttonStyle={styles.button}
+                        disabled={!this.state.canSubmit}
                         title={"Submit"}
                         onPress={() => this.onPressSignUp()}
                     />
