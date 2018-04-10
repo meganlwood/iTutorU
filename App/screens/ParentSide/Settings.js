@@ -12,11 +12,13 @@ class ParentSettings extends Component {
             <View style={styles.container}>
 
                 <Button
+                    style={styles.buttonStyle}
                     title={"Sign Out"}
                     onPress={() => this.props.signOut()}
                 />
 
                 <Button
+                    style={styles.buttonStyle}
                     title={"Contact Support"}
                     onPress={() => Linking.openURL('mailto:info@itutoru.org?subject=App Support&body=')}
                 />
@@ -30,9 +32,12 @@ class ParentSettings extends Component {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
+        paddingTop: '10%',
         height: '100%',
-        justifyContent: 'space-around',
         flexDirection: 'column',
+    },
+    buttonStyle: {
+      margin: 20
     }
 });
 
