@@ -2,19 +2,19 @@ import React, { Component } from 'react';
 import {View, Text, TextInput} from 'react-native';
 import { FormLabel, FormInput, FormValidationMessage } from 'react-native-elements'
 
-const SimpleFormComponent = (props) => {
+const MultilineSimpleFormComponent = (props) => {
 
-    return(
+    return (
         <View>
             <FormLabel>{props.title}</FormLabel>
-            <FormInput
+            <TextInput
                 onChangeText={(text) => props.onChangeText(text)}
                 secureTextEntry={props.secure}
                 keyboardType={props.keyboard}
                 spellCheck={props.spellcheck}
                 value={props.value}
-                containerStyle={props.errorMessage != '' && props.errorMessage != undefined? styles.error : null}
-                maxLength={props.maxLength}
+                multiline={true}
+                style={styles.textInput}
             />
             <FormValidationMessage>{props.errorMessage}</FormValidationMessage>
         </View>
@@ -23,13 +23,13 @@ const SimpleFormComponent = (props) => {
 }
 
 const styles = {
-    error: {
-        borderColor: 'red',
+    textInput: {
+        borderColor: 'lightgray',
+        margin: 20,
         borderWidth: 1,
-        borderRadius: 5,
+        height: 100,
+        color: 'gray'
     }
 }
 
-
-
-export default SimpleFormComponent;
+export default MultilineSimpleFormComponent;
