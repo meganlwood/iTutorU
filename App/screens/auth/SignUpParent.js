@@ -68,7 +68,7 @@ class SignUpParent extends Component {
             this.state.studentNameError = 'Please enter Student Name';
             error = true;
         }
-        if (!this.state.phone.match(/(\d\d\d)-\d\d\d-\d\d\d\d/)) {
+        if (this.state.phone.match(/(\d\d\d)-\d\d\d-\d\d\d\d/)) {
             this.state.phoneNumberError = 'Please enter a valid phone number';
             error = true;
         }
@@ -85,7 +85,6 @@ class SignUpParent extends Component {
             error = true;
         }
         if (this.state.weeklySess != 1 && this.state.weeklySess != 2) {
-            console.log("problem with weeklysess" + this.state.weeklySess);
             this.state.sessionsError = 'Please enter 1 or 2';
             error = true;
         }
