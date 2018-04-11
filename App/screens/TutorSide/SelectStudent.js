@@ -14,8 +14,8 @@ class SelectStudent extends Component {
     }
 
     renderCards(students) {
-        if (!Array.isArray(students)) {
-            return null;
+        if (!Array.isArray(students) || students.length == 0) {
+            return(<Text style={styles.textStyle}>No new students, check back later!</Text>);
         }
 
         return students.map((student, i) => {
@@ -54,6 +54,11 @@ const styles = {
         backgroundColor: '#0093ff',
         borderRadius: 30,
     },
+    textStyle: {
+      textAlign: 'center',
+      fontStyle: 'italic',
+      marginTop: '50%'
+    }
 }
 
 
