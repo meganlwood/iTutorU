@@ -68,7 +68,7 @@ class SignUpParent extends Component {
             this.state.studentNameError = 'Please enter Student Name';
             error = true;
         }
-        if (this.state.phone.match(/(\d\d\d)-\d\d\d-\d\d\d\d/)) {
+        if (this.state.phone.match(/\(\d\d\d\)-\d\d\d-\d\d\d\d/) == null) {
             this.state.phoneNumberError = 'Please enter a valid phone number';
             error = true;
         }
