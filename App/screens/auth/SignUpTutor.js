@@ -74,7 +74,7 @@ class SignUpTutor extends Component {
             this.state.nameError = 'Please enter your name';
             error = true;
         }
-        if (!this.state.phone.match(/(\d\d\d)-\d\d\d-\d\d\d\d/)) {
+        if (this.state.phone.match(/(\d\d\d)-\d\d\d-\d\d\d\d/)) {
             this.state.phoneError = 'Please enter a valid phone number';
             error = true;
         }
