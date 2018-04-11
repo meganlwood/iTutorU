@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { KeyboardAvoidingView, ScrollView, View, Text, StyleSheet } from 'react-native';
 import SimpleFormComponent from "../../components/SimpleFormComponent";
 import MultipleSelect from "../../components/MultipleSelect";
-import {Button} from "react-native-elements";
+import {Button, FormValidationMessage} from "react-native-elements";
 
 import * as Actions from "../../actions";
 import {bindActionCreators} from "redux";
@@ -10,53 +10,7 @@ import {connect} from "react-redux";
 
 class SignUpTutor extends Component {
 
-    // subjects = [
-    //     {
-    //         id: 0,
-    //         name: "Math (Elementary/Middle School)"
-    //     },
-    //     {
-    //         id: 1,
-    //         name: "Math (High School)"
-    //     },
-    //     {
-    //         id: 2,
-    //         name: "AP Computer Science",
-    //     },
-    //     {
-    //         id: 3,
-    //         name: "Physics"
-    //     },
-    //     {
-    //         id: 4,
-    //         name: "Writing"
-    //     },
-    //     {
-    //         id: 5,
-    //         name: "Reading"
-    //     }
-    // ]
 
-    subjects2 = [
-        {
-            name: "Math (Elementary/Middle School)"
-        },
-        {
-            name: "Math (High School)"
-        },
-        {
-            name: "AP Computer Science",
-        },
-        {
-            name: "Physics"
-        },
-        {
-            name: "Writing"
-        },
-        {
-            name: "Reading"
-        }
-    ]
 
     state={
         name: '',
@@ -66,6 +20,13 @@ class SignUpTutor extends Component {
         city: '',
         selectedItems: [],
         subjects: [],
+
+        nameError: '',
+        phoneError: '',
+        expError: '',
+        degreeError: '',
+        cityError: '',
+        selectedItemsError: '',
     }
 
     componentWillMount() {
@@ -92,9 +53,64 @@ class SignUpTutor extends Component {
     }
 
     onPressSignUp() {
-        const { uid } = this.props.navigation.state.params;
-        const { name, phone, exp, degree, city, selectedItems } = this.state;
-        this.props.signUpTutor(uid, name, phone, exp, degree, selectedItems, city);
+        var error = this.validateForm();
+        if (!error) {
+            const { uid } = this.props.navigation.state.params;
+            const { name, phone, exp, degree, city, selectedItems } = this.state;
+            this.props.signUpTutor(uid, name, phone, exp, degree, selectedItems, city);
+        }
+    }
+
+    validateForm() {
+        var error = false;
+        this.state.nameError = '';
+        this.state.phoneError = '';
+        this.state.expError = '';
+        this.state.degreeError = '';
+        this.state.cityError = '';
+        this.state.selectedItemsError = '';
+
+        if (this.state.name.trim().length == 0) {
+            this.state.nameError = 'Please enter your name';
+            error = true;
+        }
+        if (!this.state.phone.match(/(\d\d\d)-\d\d\d-\d\d\d\d/)) {
+            this.state.phoneError = 'Please enter a valid phone number';
+            error = true;
+        }
+        if (this.state.exp.trim().length == 0) {
+            this.state.expError = "Please enter your experience";
+            error = true;
+        }
+        if (this.state.degree.trim().length == 0) {
+            this.state.degreeError = "Please enter your degree";
+            error = true;
+        }
+        if (this.state.city.trim().length == 0) {
+            this.state.cityError = "Please enter your city";
+            error = true;
+        }
+        if (this.state.selectedItems.length == 0) {
+            this.state.selectedItemsError = "Please select at least one subject";
+            error = true;
+        }
+
+        this.setState(this.state);
+        return error;
+
+    }
+
+    onChangePhoneNumber(text) {
+        if (text.length === 3 && text.match(/\d\d\d/)) {
+            text = "(" + text + ")-";
+        }
+        if (text.length === 9) {
+            text += "-";
+        }
+        if (text.length === 5) {
+            text = text[1] + text[2];
+        }
+        this.setState({ phone: text });
     }
 
     render() {
@@ -115,12 +131,16 @@ class SignUpTutor extends Component {
                         onChangeText={(text) => this.setState({ name: text })}
                         secure={false}
                         keyboard={null}
+                        errorMessage={this.state.nameError}
                     />
                     <SimpleFormComponent
                         title={"Phone Number"}
-                        onChangeText={(text) => this.setState({ phone: text })}
+                        onChangeText={(text) => this.onChangePhoneNumber(text)}
                         secure={false}
                         keyboard={'phone-pad'}
+                        value={this.state.phone}
+                        maxLength={14}
+                        errorMessage={this.state.phoneError}
                     />
                     <MultipleSelect
                         outerStyle={{ flex: 1, margin: 20}}
@@ -135,23 +155,27 @@ class SignUpTutor extends Component {
                         color={"#0093ff"}
                         submitButtonText={"Submit"}
                     />
+                    <FormValidationMessage>{this.state.selectedItemsError}</FormValidationMessage>
 
                     <SimpleFormComponent
                         title={"Do you have tutoring experience?"}
                         onChangeText={(text) => this.setState({ exp: text })}
                         secure={false}
+                        errorMessage={this.state.expError}
                     />
                     <SimpleFormComponent
                         title={"What is your highest degree obtained?"}
                         onChangeText={(text) => this.setState({ degree: text })}
                         secure={false}
                         keyboard={null}
+                        errorMessage={this.state.degreeError}
                     />
                     <SimpleFormComponent
                         title={"City"}
                         onChangeText={(text) => this.setState({ city: text })}
                         secure={false}
                         keyboard={null}
+                        errorMessage={this.state.cityError}
                     />
                     <Button
                         buttonStyle={styles.button}

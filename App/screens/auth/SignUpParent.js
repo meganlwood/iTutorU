@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, KeyboardAvoidingView, ScrollView, Button as RNButton } from 'react-native';
-import { Button, Card, ButtonGroup } from 'react-native-elements';
+import {Button, Card, FormValidationMessage, ButtonGroup} from 'react-native-elements';
 
 import * as Actions from "../../actions";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import SimpleFormComponent from "../../components/SimpleFormComponent";
+import MultilineSimpleFormComponent from "../../components/MultilineSimpleFormComponent";
 
 
 class SignUpParent extends Component {
   constructor(props) {
     super(props);
-    this.onUpdateFields = this.onUpdateFields.bind(this);
     this.state = {
         studentName: '',
         parentName: '',
@@ -23,10 +23,23 @@ class SignUpParent extends Component {
         goBack: false,
         availability: [],
         weeklySess: 0,
-        canSubmit: false,
-        selectedIndex: 0
-    };
+        otherInfo: '',
+        selectedIndex: 0,
+
+        //Errors
+        parentNameError: '',
+        studentNameError: '',
+        phoneNumberError: '',
+        subjectsError: '',
+        gradeError: '',
+        addressError: '',
+        sessionsError: '',
+        submitError: '',
+
+
+    }
   }
+
 
     componentWillMount() {
         console.log("SIGNUPPARENT PARAMS");
@@ -36,28 +49,86 @@ class SignUpParent extends Component {
         this.setState({ uid, goBack });
     }
 
-    onPressSignUp() {
-        const { uid, studentName, parentName, phone, subject, grade, address, availability, weeklySess } = this.state;
-        this.props.signUpParent(uid, parentName, phone, studentName, subject, grade, address, availability, weeklySess);
-        this.props.navigation.goBack();
+    validateForms() {
+        var error = false;
+        this.state.parentNameError = '';
+        this.state.studentNameError = '';
+        this.state.phoneNumberError = '';
+        this.state.subjectsError = '';
+        this.state.gradeError = '';
+        this.state.addressError = '';
+        this.state.sessionsError = '';
+        this.state.submitError = '';
+
+        if (this.state.parentName.trim().length == 0) {
+            this.state.parentNameError = 'Please enter Parent Name';
+            error = true;
+        }
+        if (this.state.studentName.trim().length == 0) {
+            this.state.studentNameError = 'Please enter Student Name';
+            error = true;
+        }
+        if (!this.state.phone.match(/(\d\d\d)-\d\d\d-\d\d\d\d/)) {
+            this.state.phoneNumberError = 'Please enter a valid phone number';
+            error = true;
+        }
+        if (this.state.grade.trim().length == 0) {
+            this.state.gradeError = "Please enter student's grade";
+            error = true;
+        }
+        if (this.state.subject.trim().length == 0) {
+            this.state.subjectsError = 'Please enter at least one subject';
+            error = true;
+        }
+        if (this.state.address.trim().length == 0) {
+            this.state.addressError = 'Please enter your address';
+            error = true;
+        }
+        if (this.state.weeklySess != 1 && this.state.weeklySess != 2) {
+            console.log("problem with weeklysess" + this.state.weeklySess);
+            this.state.sessionsError = 'Please enter 1 or 2';
+            error = true;
+        }
+        if (this.state.availability.length == 0) {
+            this.state.submitError = 'Please fill out your availability';
+            error = true;
+        }
+
+        this.setState(this.state);
+        return error;
     }
 
-    onUpdateFields() {
-      console.log("CHECKING: ");
-      console.log(this.state);
-      if (this.state.studentName == '' || this.state.parentName == '' || this.state.phone == '' || this.state.subject == '' || this.state.grade == '' || this.state.address == '') {
-        this.setState({canSubmit: false});
-      } else if (this.state.weeklySess != 1 && this.state.weeklySess != 2) {
-        this.setState({canSubmit: false});
-      } else {
-        this.setState({canSubmit: true});
-      }
+    onPressSignUp() {
+        var error = this.validateForms();
+
+        const { uid, studentName, parentName, phone, subject, grade, address, availability, weeklySess } = this.state;
+        console.log("WEEKLY SESSIONS: " + this.state.weeklySess);
+
+        if (!error) {
+            this.props.signUpParent(uid, parentName, phone, studentName, subject, grade, address, availability, weeklySess);
+            if (this.state.goBack) {
+                this.props.navigation.goBack();
+            }
+        }
     }
 
     onAvailabilityNavBack(availability) {
         console.log("availability navback");
         console.log(availability);
         this.setState({ availability });
+    }
+
+    onChangePhoneNumber(text) {
+        if (text.length === 3 && text.match(/\d\d\d/)) {
+            text = "(" + text + ")-";
+        }
+        if (text.length === 9) {
+            text += "-";
+        }
+        if (text.length === 5) {
+            text = text[1] + text[2];
+        }
+        this.setState({ phone: text });
     }
 
 
@@ -71,64 +142,68 @@ class SignUpParent extends Component {
                         title={"Full Name (Parent)"}
                         onChangeText={(text) => {
                           this.setState({ parentName: text });
-                          this.onUpdateFields();
                         }}
                         secure={false}
                         keyboard={null}
+                        errorMessage={this.state.parentNameError}
                     />
                     <SimpleFormComponent
                         title={"Full Name (Student)"}
                         onChangeText={(text) => {
                           this.setState({ studentName: text })
-                          this.onUpdateFields();
                         }}
                         secure={false}
                         keyboard={null}
+                        errorMessage={this.state.studentNameError}
                     />
                     <SimpleFormComponent
                         title={"Phone Number"}
-                        onChangeText={(text) => {
-                          this.setState({ phone: text });
-                          this.onUpdateFields();
-                        }}
+                        value={this.state.phone}
+                        onChangeText={(text) => this.onChangePhoneNumber(text)}
                         secure={false}
                         keyboard={'phone-pad'}
+                        errorMessage={this.state.phoneNumberError}
+                        maxLength={14}
                     />
                     <SimpleFormComponent
                         title={"Subject(s)"}
                         onChangeText={(text) => {
                           this.setState({ subject: text });
-                          this.onUpdateFields();
                         }}
                         secure={false}
                         keyboard={null}
+                        errorMessage={this.state.subjectsError}
                     />
                     <SimpleFormComponent
                         title={"Student's Grade"}
                         onChangeText={(text) => {
                           this.setState({ grade: text });
-                          this.onUpdateFields();
                         }}
                         secure={false}
                         keyboard={'numeric'}
+                        errorMessage={this.state.gradeError}
                     />
                     <SimpleFormComponent
                         title={"Address"}
-                        onChangeText={(text) => {
-                          this.setState({ address: text });
-                          this.onUpdateFields();
-                        }}
+                        onChangeText={(text) => this.setState({ address: text })}
                         secure={false}
                         keyboard={null}
+                        errorMessage={this.state.addressError}
                     />
                     <ButtonGroup containerStyle={{marginTop: 10, marginBottom: 20, marginRight: 20, marginLeft: 20}}
                       onPress={(index) => {
                         this.setState({selectedIndex: index, weeklySess: index+1});
-                        this.onUpdateFields();
                       }}
                       selectedIndex={this.state.selectedIndex}
                       buttons={['1', '2']}
+                      />
+                    <MultilineSimpleFormComponent
+                        title={"Is there anything else you would like us to know about your student? (Learning style, etc)"}
+                        onChangeText={(text) => this.setState({ otherInfo: text })}
+                        secure={false}
+                        keyboard={null}
                     />
+
                     {this.state.availability.length == 0 &&
                     <Button
                         buttonStyle={styles.button}
@@ -161,10 +236,9 @@ class SignUpParent extends Component {
 
                     }
 
-
+                    <FormValidationMessage>{this.state.submitError}</FormValidationMessage>
                     <Button
                         buttonStyle={styles.button}
-                        disabled={!this.state.canSubmit}
                         title={"Submit"}
                         onPress={() => this.onPressSignUp()}
                     />
