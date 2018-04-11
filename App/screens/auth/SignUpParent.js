@@ -60,6 +60,11 @@ class SignUpParent extends Component {
         this.state.sessionsError = '';
         this.state.submitError = '';
 
+
+        if (this.state.availability.length == 0 || this.state.availability.length < this.state.weeklySess) {
+            this.state.submitError = 'Please select more available times for tutoring';
+            error = true;
+        }
         if (this.state.parentName.trim().length == 0) {
             this.state.parentNameError = 'Please enter Parent Name';
             error = true;
@@ -87,10 +92,6 @@ class SignUpParent extends Component {
         if (this.state.weeklySess != 1 && this.state.weeklySess != 2) {
             console.log("problem with weeklysess" + this.state.weeklySess);
             this.state.sessionsError = 'Please enter 1 or 2';
-            error = true;
-        }
-        if (this.state.availability.length == 0) {
-            this.state.submitError = 'Please fill out your availability';
             error = true;
         }
 
