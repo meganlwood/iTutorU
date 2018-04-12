@@ -38,6 +38,19 @@ let messageData = {
     hasMessages: false,
 }
 
+let calData = {
+  cal: {},
+}
+
+const calReducer = (state = calData, action) => {
+  switch(action.type) {
+    case "CAL":
+      return { ...state, cal: action.cal };
+    default:
+      return state;
+  }
+}
+
 const messagingReducer = (state = messageData, action) => {
     switch(action.type) {
         case MESSAGES:
@@ -109,6 +122,7 @@ const rootReducer = combineReducers({
     authReducer,
     parentReducer,
     messagingReducer,
+    calReducer
     // ,[ANOTHER REDUCER], [ANOTHER REDUCER] ....
 })
 

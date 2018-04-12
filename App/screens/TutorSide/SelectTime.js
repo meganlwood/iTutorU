@@ -73,8 +73,11 @@ class SelectTime extends Component {
                       this.state.availableTimes.map((time) => {
                         let index = i;
                         if (this.state.checked[index] === true) {
+                          // adds the checked time to the list of times
                           times.push(time);
 
+                          // at the end of this segment of code, cal1 will have
+                          //  all the scheduled sessions between this tutor & student
                           var space = time.indexOf(" ");
                           var words = time.substring(0, space);
                           var ind = stringToIndex(words);
@@ -87,33 +90,15 @@ class SelectTime extends Component {
                         }
                         i++;
                       });
+                      // TODO uncomment this once calendar population is fully finished
                       // var studentInfo = this.state.student;
                       // studentInfo.chosenTimes = times;
                       // this.setState({student: studentInfo});
                       // console.log(this.state.student);
                       // connectStudentTutor(this.state.student, this.props.uid, arr);
 
-                      // put cal1 into database for student
-                      // pull tutor calendar from database, merge with calendar
-
-                      // var data = [
-                      //   0: {
-                      //     "2018-4-17" : {
-                      //       sessions: {
-                      //         name: "Tutoring Session with John",
-                      //         time: "3:00 PM"
-                      //       }
-                      //     }
-                      //   },
-                      //   1: {
-                      //     "2018-4-23": {
-                      //       sessions: {
-                      //         name: "Tutoring Session with John",
-                      //         time: "3:00 PM"
-                      //       }
-                      //     }
-                      //   }
-                      // ];
+                      // TODO put cal1 into database for student
+                      // TODO pull tutor calendar from database, merge with calendar, using dummy data for now
                       var data = [
                         {"2018-04-16":
                           {sessions:[
@@ -131,10 +116,7 @@ class SelectTime extends Component {
                             }
                           ]}
                         }];
-                      // console.log(JSON.stringify(cal1));
                       cal2 = mergeCalendar(cal1, data);
-                      console.log(cal2);
-                      console.log("merged");
                       this.props.addCalendar(cal2);
                       this.props.navigation.navigate('Home');
 

@@ -283,6 +283,14 @@ export function loadMessages(convoKey) {
 
 }
 
+export function addCalendar(cal) {
+  return (dispatch) => {
+    dispatch({ type: "CAL", cal: cal});
+
+  }
+
+}
+
 // Loads the subjects for the Tutor sign up form.
 function loadSubjects(dispatch) {
     getSubjects().then(subjects => {
@@ -299,5 +307,3 @@ function compareTimeStamps(a, b) {
 
     return 0;
 }
-
-

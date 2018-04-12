@@ -12,43 +12,7 @@ import {connect} from "react-redux";
 
 class CalendarScreen extends Component {
 
-    // DATA = {
-    //     items: {
-    //         '2018-04-08': {
-    //             sessions: [
-    //                 {
-    //                     name: 'Bobby: Tutoring session with Casey',
-    //                     time: '3:15-4:15',
-    //                 },
-    //                 {
-    //                     name: 'Billy: Tutoring session with Casey',
-    //                     time: '4:30-5:30',
-    //                 }
-    //             ]
-    //         },
-    //         '2018-04-15': {
-    //             sessions: [
-    //                 {
-    //                     name: 'Billy: Tutoring session with Casey',
-    //                     time: '3:30-4:30',
-    //                 }
-    //             ],
-    //         },
-    //         '2018-04-20': {
-    //             sessions: [
-    //                 {
-    //                     name: 'More test data lalalalala this can be really really long and it still looks nice on the calendar',
-    //                     time: '2:00-3:00',
-    //                 },
-    //                 {
-    //                     name: 'Another session',
-    //                     time: '1:00-2:00',
-    //                 }
-    //             ]
-    //         }
-    //
-    //     },
-    // }
+    DATA = {}
 
     static navigationOptions = {
         title: 'Calendar'
@@ -62,7 +26,22 @@ class CalendarScreen extends Component {
         };
     }
 
+    // Takes the calendar data passed in through redux and formats
+    //  it so that the calendar can actually read it.
+    componentWillMount() {
+      var d = {
+        items: {}
+      };
+
+      for (var i in this.props.cal) {
+        var key = Object.keys(this.props.cal[i]);
+        d.items[[key]] = this.props.cal[i][key];
+      }
+      this.DATA = d;
+    }
+
     render() {
+      console.log(JSON.stringify(this.DATA));
         return(
             <Agenda
                 items={this.state.items}

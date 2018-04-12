@@ -18,7 +18,7 @@ export function mergeCalendar(cal1, cal2) {
       var key2 = Object.keys(cal2[d])[0];
       if (key2 == key) {
         isInCal1[d] = true;
-        // merge sessions
+        // we found 2 calendar days with sessions, so merge the sessions
         for (var item in cal2[d][key2].sessions) {
           cal1[date][key].sessions.push(cal2[d][key2].sessions[item]);
         }
@@ -28,20 +28,13 @@ export function mergeCalendar(cal1, cal2) {
     index++;
   }
 
-  console.log(cal1);
-
-  // now go through and add the ones that are not in cal 1
+  // this loop adds the calendar items that are not in cal1 but are in cal2
   for (var d in cal2) {
     if (!isInCal1[d]) {
       var key = Object.keys(cal2[d])[0];
-      console.log(cal1);
-      // cal1[cal1.length][key] = cal2[d][key];
-
       cal1.push({[key]:cal2[d][key]});
-      console.log(cal1);
     }
   }
-  console.log(cal1);
 
   return cal1;
 }
@@ -96,8 +89,6 @@ function timeComparator(s1, s2) {
     }
     else return 1;
 }
-
-// need a date comparator
 
 function convertToDateFormat(date) {
   if (date.length == 10) {
