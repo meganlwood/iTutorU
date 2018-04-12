@@ -3,48 +3,52 @@ import { View, Text, StyleSheet } from 'react-native'; // 1.0.0-beta.30
 import { Calendar, CalendarList, Agenda, Arrow } from 'react-native-calendars'; // 1.17.0
 import { Card } from 'react-native-elements'; // 0.19.0
 
+import * as Actions from "../actions";
+import {bindActionCreators} from "redux";
+import {connect} from "react-redux";
+
 
 
 
 class CalendarScreen extends Component {
 
-    DATA = {
-        items: {
-            '2018-04-08': {
-                sessions: [
-                    {
-                        name: 'Bobby: Tutoring session with Casey',
-                        time: '3:15-4:15',
-                    },
-                    {
-                        name: 'Billy: Tutoring session with Casey',
-                        time: '4:30-5:30',
-                    }
-                ]
-            },
-            '2018-04-15': {
-                sessions: [
-                    {
-                        name: 'Billy: Tutoring session with Casey',
-                        time: '3:30-4:30',
-                    }
-                ],
-            },
-            '2018-04-20': {
-                sessions: [
-                    {
-                        name: 'More test data lalalalala this can be really really long and it still looks nice on the calendar',
-                        time: '2:00-3:00',
-                    },
-                    {
-                        name: 'Another session',
-                        time: '1:00-2:00',
-                    }
-                ]
-            }
-
-        },
-    }
+    // DATA = {
+    //     items: {
+    //         '2018-04-08': {
+    //             sessions: [
+    //                 {
+    //                     name: 'Bobby: Tutoring session with Casey',
+    //                     time: '3:15-4:15',
+    //                 },
+    //                 {
+    //                     name: 'Billy: Tutoring session with Casey',
+    //                     time: '4:30-5:30',
+    //                 }
+    //             ]
+    //         },
+    //         '2018-04-15': {
+    //             sessions: [
+    //                 {
+    //                     name: 'Billy: Tutoring session with Casey',
+    //                     time: '3:30-4:30',
+    //                 }
+    //             ],
+    //         },
+    //         '2018-04-20': {
+    //             sessions: [
+    //                 {
+    //                     name: 'More test data lalalalala this can be really really long and it still looks nice on the calendar',
+    //                     time: '2:00-3:00',
+    //                 },
+    //                 {
+    //                     name: 'Another session',
+    //                     time: '1:00-2:00',
+    //                 }
+    //             ]
+    //         }
+    //
+    //     },
+    // }
 
     static navigationOptions = {
         title: 'Calendar'
@@ -144,4 +148,14 @@ const styles = StyleSheet.create({
 
 });
 
-export default CalendarScreen;
+function mapStateToProps(state, props) {
+    return  {
+        cal: state.calReducer.cal,
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators(Actions, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CalendarScreen);

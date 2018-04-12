@@ -5,6 +5,7 @@ import * as Actions from "../../actions";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {connectStudentTutor} from "../../FirebaseManager";
+import {nextDays, stringToIndex, mergeCalendar, mergeSessions} from '../../Util';
 
 class SelectTime extends Component {
   constructor(props) {
@@ -67,18 +68,74 @@ class SelectTime extends Component {
 
                       let i = 0;
                       var times = [];
+                      var cal1 = [];
+                      var cal2 = [];
                       this.state.availableTimes.map((time) => {
                         let index = i;
                         if (this.state.checked[index] === true) {
                           times.push(time);
+
+                          var space = time.indexOf(" ");
+                          var words = time.substring(0, space);
+                          var ind = stringToIndex(words);
+                          if (cal1.length == 0) {
+                            cal1 = nextDays(ind, 4, "Tutoring Session with Jane", time.substring(space+1));
+                          } else {
+                            cal2 = nextDays(ind, 4, "Tutoring Session with Jane", time.substring(space+1));
+                            cal1 = mergeCalendar(cal1, cal2);
+                          }
                         }
                         i++;
                       });
-                      var studentInfo = this.state.student;
-                      studentInfo.chosenTimes = times;
-                      this.setState({student: studentInfo});
-                      console.log(this.state.student);
-                      connectStudentTutor(this.state.student, this.props.uid, arr);
+                      // var studentInfo = this.state.student;
+                      // studentInfo.chosenTimes = times;
+                      // this.setState({student: studentInfo});
+                      // console.log(this.state.student);
+                      // connectStudentTutor(this.state.student, this.props.uid, arr);
+
+                      // put cal1 into database for student
+                      // pull tutor calendar from database, merge with calendar
+
+                      // var data = [
+                      //   0: {
+                      //     "2018-4-17" : {
+                      //       sessions: {
+                      //         name: "Tutoring Session with John",
+                      //         time: "3:00 PM"
+                      //       }
+                      //     }
+                      //   },
+                      //   1: {
+                      //     "2018-4-23": {
+                      //       sessions: {
+                      //         name: "Tutoring Session with John",
+                      //         time: "3:00 PM"
+                      //       }
+                      //     }
+                      //   }
+                      // ];
+                      var data = [
+                        {"2018-04-16":
+                          {sessions:[
+                            {
+                              name:"Tutoring Session with Jane",
+                              time:"5:00 PM"
+                            }
+                          ]}
+                        },
+                        {"2018-04-24":
+                          {sessions:[
+                            {
+                              name:"Tutoring Session with Jane",
+                              time:"6:00 PM"
+                            }
+                          ]}
+                        }];
+                      // console.log(JSON.stringify(cal1));
+                      cal2 = mergeCalendar(cal1, data);
+                      console.log(cal2);
+                      console.log("merged");
+                      this.props.addCalendar(cal2);
                       this.props.navigation.navigate('Home');
 
                     }}
