@@ -8,15 +8,6 @@ import * as Actions from '../../actions/index';
 
 class ParentHome extends Component {
 
-    componentWillReceiveProps(nextProps) {
-        console.log("will receive");
-        console.log(nextProps);
-    }
-
-    componentWillMount() {
-        console.log("Data: ");
-        console.log(this.props);
-    }
 
     renderStudentCard(student) {
         var tutor = student.tutor;
