@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, KeyboardAvoidingView, ScrollView, Button as RNButton } from 'react-native';
-import {Button, Card, FormValidationMessage} from 'react-native-elements';
+import {Button, Card, FormValidationMessage, ButtonGroup} from 'react-native-elements';
 
 import * as Actions from "../../actions";
 import {bindActionCreators} from "redux";
@@ -8,9 +8,11 @@ import {connect} from "react-redux";
 import SimpleFormComponent from "../../components/SimpleFormComponent";
 import MultilineSimpleFormComponent from "../../components/MultilineSimpleFormComponent";
 
-class SignUpParent extends Component {
 
-    state = {
+class SignUpParent extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
         studentName: '',
         parentName: '',
         phone: '',
@@ -20,8 +22,9 @@ class SignUpParent extends Component {
         uid: '',
         goBack: false,
         availability: [],
-        weeklySess: '',
+        weeklySess: 0,
         otherInfo: '',
+        selectedIndex: 0,
 
         //Errors
         parentNameError: '',
@@ -35,6 +38,7 @@ class SignUpParent extends Component {
 
 
     }
+  }
 
 
     componentWillMount() {
@@ -80,7 +84,7 @@ class SignUpParent extends Component {
             this.state.addressError = 'Please enter your address';
             error = true;
         }
-        if (!this.state.weeklySess.match(/1|2/)) {
+        if (this.state.weeklySess != 1 && this.state.weeklySess != 2) {
             console.log("problem with weeklysess" + this.state.weeklySess);
             this.state.sessionsError = 'Please enter 1 or 2';
             error = true;
@@ -136,14 +140,18 @@ class SignUpParent extends Component {
                     <Text style={styles.title}>New Student Sign Up</Text>
                     <SimpleFormComponent
                         title={"Full Name (Parent)"}
-                        onChangeText={(text) => this.setState({ parentName: text })}
+                        onChangeText={(text) => {
+                          this.setState({ parentName: text });
+                        }}
                         secure={false}
                         keyboard={null}
                         errorMessage={this.state.parentNameError}
                     />
                     <SimpleFormComponent
                         title={"Full Name (Student)"}
-                        onChangeText={(text) => this.setState({ studentName: text })}
+                        onChangeText={(text) => {
+                          this.setState({ studentName: text })
+                        }}
                         secure={false}
                         keyboard={null}
                         errorMessage={this.state.studentNameError}
@@ -159,14 +167,18 @@ class SignUpParent extends Component {
                     />
                     <SimpleFormComponent
                         title={"Subject(s)"}
-                        onChangeText={(text) => this.setState({ subject: text })}
+                        onChangeText={(text) => {
+                          this.setState({ subject: text });
+                        }}
                         secure={false}
                         keyboard={null}
                         errorMessage={this.state.subjectsError}
                     />
                     <SimpleFormComponent
                         title={"Student's Grade"}
-                        onChangeText={(text) => this.setState({ grade: text })}
+                        onChangeText={(text) => {
+                          this.setState({ grade: text });
+                        }}
                         secure={false}
                         keyboard={'numeric'}
                         errorMessage={this.state.gradeError}
@@ -178,19 +190,13 @@ class SignUpParent extends Component {
                         keyboard={null}
                         errorMessage={this.state.addressError}
                     />
-                    <SimpleFormComponent
-                        title={"How many sessions per week would you like? (1 or 2)"}
-                        onChangeText={(text) => {
-                          //var num = parseInt(text);
-                          this.setState({ weeklySess: text });
-                          console.log("STATE IS: ");
-                          console.log(this.state);
-                        }}
-                        secure={false}
-                        keyboard={'numeric'}
-                        errorMessage={this.state.sessionsError}
-                        value={this.state.weeklySess}
-                    />
+                    <ButtonGroup containerStyle={{marginTop: 10, marginBottom: 20, marginRight: 20, marginLeft: 20}}
+                      onPress={(index) => {
+                        this.setState({selectedIndex: index, weeklySess: index+1});
+                      }}
+                      selectedIndex={this.state.selectedIndex}
+                      buttons={['1', '2']}
+                      />
                     <MultilineSimpleFormComponent
                         title={"Is there anything else you would like us to know about your student? (Learning style, etc)"}
                         onChangeText={(text) => this.setState({ otherInfo: text })}
