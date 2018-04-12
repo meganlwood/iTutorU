@@ -4,7 +4,7 @@ import { Button, Card, CheckBox } from 'react-native-elements';
 import * as Actions from "../../actions";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
-import {connectStudentTutor} from "../../FirebaseManager";
+import {connectStudentTutor, updateStudentCalendar, updateTutorCalendar} from "../../FirebaseManager";
 import {nextDays, stringToIndex, mergeCalendar, mergeSessions} from '../../Util';
 
 class SelectTime extends Component {
@@ -17,11 +17,6 @@ class SelectTime extends Component {
       student: this.props.navigation.state.params.studentData
     }
   }
-
-    componentWillMount() {
-        console.log("select time props");
-        console.log(this.props);
-      }
 
     renderAvailability(times) {
       let total = -1;
@@ -66,6 +61,9 @@ class SelectTime extends Component {
                       }
                       arr.push(this.state.student.key);
 
+                      var studentIndex = this.state.student.studentName.indexOf(" ");
+                      var tutorIndex = this.props.name.indexOf(" ");
+                      let title = this.state.student.studentName.substring(0, studentIndex) + ": Tutoring Session with " + this.props.name.substring(0, tutorIndex);
                       let i = 0;
                       var times = [];
                       var cal1 = [];
@@ -82,41 +80,25 @@ class SelectTime extends Component {
                           var words = time.substring(0, space);
                           var ind = stringToIndex(words);
                           if (cal1.length == 0) {
-                            cal1 = nextDays(ind, 4, "Tutoring Session with Jane", time.substring(space+1));
+                            cal1 = nextDays(ind, this.state.student.paidSessions / this.state.student.weeklySessions, title, time.substring(space+1));
                           } else {
-                            cal2 = nextDays(ind, 4, "Tutoring Session with Jane", time.substring(space+1));
+                            cal2 = nextDays(ind, this.state.student.paidSessions / this.state.student.weeklySessions, title, time.substring(space+1));
                             cal1 = mergeCalendar(cal1, cal2);
                           }
                         }
                         i++;
                       });
-                      // TODO uncomment this once calendar population is fully finished
-                      // var studentInfo = this.state.student;
-                      // studentInfo.chosenTimes = times;
-                      // this.setState({student: studentInfo});
-                      // console.log(this.state.student);
-                      // connectStudentTutor(this.state.student, this.props.uid, arr);
+                      var studentInfo = this.state.student;
+                      studentInfo.chosenTimes = times;
+                      this.setState({student: studentInfo});
 
-                      // TODO put cal1 into database for student
-                      // TODO pull tutor calendar from database, merge with calendar, using dummy data for now
-                      var data = [
-                        {"2018-04-16":
-                          {sessions:[
-                            {
-                              name:"Tutoring Session with Jane",
-                              time:"5:00 PM"
-                            }
-                          ]}
-                        },
-                        {"2018-04-24":
-                          {sessions:[
-                            {
-                              name:"Tutoring Session with Jane",
-                              time:"6:00 PM"
-                            }
-                          ]}
-                        }];
-                      cal2 = mergeCalendar(cal1, data);
+                      connectStudentTutor(this.state.student, this.props.uid, arr);
+                      updateStudentCalendar(studentInfo.key, cal1);
+
+                      cal2 = mergeCalendar(cal1, this.props.currentCal);
+                      updateTutorCalendar(this.props.uid, cal2);
+
+
                       this.props.addCalendar(cal2);
                       this.props.navigation.navigate('Home');
 
@@ -162,7 +144,9 @@ const styles = {
 function mapStateToProps(state, props) {
     return  {
         currentStudents: state.tutorReducer.studentIDs,
-        uid: state.tutorReducer.data.uid
+        uid: state.tutorReducer.data.uid,
+        name: state.tutorReducer.data.tutorName,
+        currentCal: state.tutorReducer.data.calendar
     }
 }
 

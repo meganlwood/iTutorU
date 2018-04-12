@@ -105,6 +105,8 @@ function loadTutorData(dispatch, uid, tutorData) {
             subjects: tutorData.subjects,
             unmatchedStudents: [],
             frozen: tutorData.frozen,
+            tutorName: tutorData.name,
+            calendar: tutorData.calendar
         }
 
         getStudentsWithoutTutor().then(res => {

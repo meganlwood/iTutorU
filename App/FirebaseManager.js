@@ -141,7 +141,6 @@ export function createStudent(parentUID, studentName, subject, grade, address, a
     }
 
     return new Promise((resolve, reject) => {
-        console.log("WEEKLY SESSIONS GOING TO DATABASE: " + weeklySess);
         var studentRef = firebase.database().ref('students/').push();
         studentRef.set({
             studentName: studentName,
@@ -150,7 +149,8 @@ export function createStudent(parentUID, studentName, subject, grade, address, a
             address: address,
             learningPlan: defaultLP,
             availability: availability,
-            weeklySessions: weeklySess
+            weeklySessions: weeklySess,
+            paidSessions: 0
         })
 
         // Add student to parent
@@ -345,3 +345,28 @@ export function getSubjects() {
         })
     })
 }
+
+export function updateStudentCalendar(uid, cal) {
+  console.log("update calendar for user: " + uid);
+  return new Promise((resolve, reject) => {
+      firebase.database().ref('students/' + uid).update({
+          calendar: cal
+      });
+      resolve(true);
+  })
+}
+
+export function updateTutorCalendar(uid, cal) {
+  console.log("update calendar for user: " + uid);
+  return new Promise((resolve, reject) => {
+      firebase.database().ref('tutors/' + uid).update({
+          calendar: cal
+      });
+      resolve(true);
+  })
+}
+
+// export function getTutorCalendar(uid, cal) {
+//   console.log("getting tutor " + uid + " calendar");
+//
+// }
