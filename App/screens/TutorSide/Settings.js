@@ -23,10 +23,10 @@ class TutorSettings extends Component {
         return(
             <View style={styles.container}>
 
-                <Button style={styles.buttonStyle}
-                  title={"Approve Timesheet"}
-                  onPress={() => console.log("approving timesheet")}
-                />
+                // <Button style={styles.buttonStyle}
+                //   title={"Approve Timesheet"}
+                //   onPress={() => console.log("approving timesheet")}
+                // />
 
                 <Button style={styles.buttonStyle}
                     title={"Find New Students"}
