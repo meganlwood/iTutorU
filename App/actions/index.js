@@ -1,10 +1,10 @@
 import {
     getLoggedInUserPromise, getTutor, signIn as FBSignIn, userType, getParent, signOut as FBSignOut,
     getStudent, getStudentsWithoutTutor, createParent, createStudent, createTutor,
-    getMessage, getSubjects
+    getMessage, getSubjects, getStudentAndUID
 } from "../FirebaseManager";
 import firebase from "firebase";
-import {generateConvoKey} from "../Util";
+import {generateConvoKey, mergeCalendar} from "../Util";
 
 
 export const DATA_AVAILABLE = 'DATA_AVAILABLE';
@@ -21,6 +21,7 @@ export const MESSAGES = 'MESSAGES';
 export const NO_MESSAGES = 'NO_MESSAGES';
 export const LOADED_SUBJECTS = 'LOADED SUBJECTS';
 export const INCOMPLETE_TUTOR_PROFILE = 'INCOMPLETE_TUTOR_PROFILE';
+export const CALENDAR = 'CALENDAR';
 
 
 // Called from Router. First action called when the app opens. Checks if the user is logged in, and if so loads the appropriate data.
@@ -106,7 +107,7 @@ function loadTutorData(dispatch, uid, tutorData) {
             unmatchedStudents: [],
             frozen: tutorData.frozen,
             tutorName: tutorData.name,
-            calendar: tutorData.calendar
+            //calendar: tutorData.calendar
         }
 
         getStudentsWithoutTutor().then(res => {
@@ -115,12 +116,18 @@ function loadTutorData(dispatch, uid, tutorData) {
         })
 
         var students = tutorData.students;
+        var calendar = [];
 
         for (var i in students) {
             var convoKey = generateConvoKey(uid, students[i]);
-            getStudent(students[i]).then(data => {
+            getStudentAndUID(students[i]).then(res => {
+                var data = res.data;
+
+                if (students[i] == undefined) console.log("NOT COMMENTED OUT");
+                else console.log("COMMENTED OUT");
+
                 resdata.students.push({
-                    uid: students[i],
+                    uid: res.uid,
                     name: data.studentName,
                     subject: data.subject,
                     address: data.city,
@@ -128,8 +135,22 @@ function loadTutorData(dispatch, uid, tutorData) {
                     convoKey: convoKey,
                 });
 
+                if (data.calendar != undefined) {
+                  calendar.push(data.calendar);
+                }
+
                 if (resdata.students.length === students.length) {
+
+
                     dispatch({ type: TUTOR_DATA, data: resdata, studentIDs: tutorData.students });
+
+                    if (calendar.length > 0) {
+                      var cal = calendar[0];
+                      for (var i = 1; i < calendar.length; i++) {
+                        cal = mergeCalendar(cal, calendar[i]);
+                      }
+                      dispatch({ type: CALENDAR, cal: cal });
+                    }
                 }
             })
         }
@@ -161,17 +182,27 @@ function loadParentData(dispatch, uid, parentData) {
     }
     else {
         // Load each student's information
+        var calendar = [];
+
         for (var i = 0; i < studentArr.length; i++) {
             var studentID = studentArr[i];
             getStudent(studentID).then(studentRes => {
                 var tutorUID = studentRes.tutor;
                 studentRes.uid = studentID;
+                if (studentRes.calendar != undefined) calendar.push(studentRes.calendar);
+
                 if (tutorUID) {
                     getTutor(tutorUID).then(tutorRes => {
                         var convoKey = generateConvoKey(studentID, tutorUID);
                         studentRes.tutor = { uid: tutorUID, name: tutorRes.name, convoKey: convoKey };
                         resdata.students.push(studentRes);
                         if (resdata.students.length == studentArr.length) {
+                            var cal = [];
+                            for (var i = 1; i < calendar.length; i++) {
+                                cal = mergeCalendar(cal, calendar[i]);
+                            }
+                            dispatch({ type: CALENDAR, cal: cal });
+
                             dispatch({ type: PARENT_DATA, data: resdata });
                         }
                     })

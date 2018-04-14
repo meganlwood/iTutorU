@@ -223,6 +223,14 @@ export function getStudent(uid) {
     })
 }
 
+export function getStudentAndUID(uid) {
+  return new Promise((resolve, reject) => {
+      firebase.database().ref('students/' + uid).once('value', function(snapshot) {
+          resolve({uid: uid, data: snapshot.val()});
+      })
+  })
+}
+
 export function getStudentsWithoutTutor() {
     return new Promise((resolve, reject) => {
         firebase.database().ref('students').orderByChild('tutor').equalTo(null).once('value', function(snapshot) {
