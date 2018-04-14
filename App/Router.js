@@ -26,6 +26,7 @@ import ParentLPHome from "./screens/ParentSide/ParentLPHome";
 import ParentSettings from "./screens/ParentSide/Settings";
 import SelectAvailability from "./screens/auth/SelectAvailability";
 import ForgotPassword from "./screens/auth/ForgotPassword";
+import SignUpNewStudent from './screens/ParentSide/SignUpNewStudent';
 
 const TutorHomeStack = StackNavigator({
     Home: { screen: TutorHome },
@@ -72,6 +73,20 @@ const ForgotPassStack = StackNavigator({
     SendEmail: { screen: ForgotPassword }
 }, { headerMode: 'none', mode: 'modal' });
 
+const SignUpNewStudentStack = StackNavigator({
+  SignUpStudent: { screen: SignUpNewStudent },
+  SelectAvailability: { screen: SelectAvailability }
+}, {
+  headerMode: 'none'
+});
+
+const ParentSettingsStack = StackNavigator({
+    ParentSettingsHome: { screen: ParentSettings },
+    SignUpNewStudent: { screen: SignUpNewStudentStack }
+});
+
+
+
 //will be modal
 // const AuthStack = StackNavigator(
 //     {
@@ -86,7 +101,7 @@ const ForgotPassStack = StackNavigator({
 //         mode: 'modal',
 //     }
 // );
-// 
+//
 // const SignUpStack = StackNavigator(
 //     {
 //         SignUpParent: { screen: SignUpParent},
@@ -190,7 +205,7 @@ const LoggedInParent = TabNavigator({
         }
     },
     Settings: {
-        screen: ParentSettings,
+        screen: ParentSettingsStack,
         navigationOptions: {
             tabBarLabel: "Settings",
             tabBarIcon: ({ tintColor }) => {

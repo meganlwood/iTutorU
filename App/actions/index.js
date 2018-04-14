@@ -140,16 +140,19 @@ function loadTutorData(dispatch, uid, tutorData) {
                 }
 
                 if (resdata.students.length === students.length) {
-
-
                     dispatch({ type: TUTOR_DATA, data: resdata, studentIDs: tutorData.students });
 
-                    if (calendar.length > 0) {
-                      var cal = calendar[0];
-                      for (var i = 1; i < calendar.length; i++) {
-                        cal = mergeCalendar(cal, calendar[i]);
+                    if (tutorData.calendar == undefined) {
+                      if (calendar.length > 0) {
+                        var cal = calendar[0];
+                        for (var i = 1; i < calendar.length; i++) {
+                          cal = mergeCalendar(cal, calendar[i]);
+                        }
+                        dispatch({ type: CALENDAR, cal: cal });
                       }
-                      dispatch({ type: CALENDAR, cal: cal });
+                    }
+                    else {
+                      dispatch({ type: CALENDAR, cal: tutorData.calendar });
                     }
                 }
             })

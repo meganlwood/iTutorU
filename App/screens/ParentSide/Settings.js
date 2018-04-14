@@ -7,9 +7,19 @@ import {connect} from "react-redux";
 
 class ParentSettings extends Component {
 
+    onSignUpNewStudent() {
+        this.props.navigation.navigate('SignUpNewStudent');
+    }
+
     render() {
         return(
             <View style={styles.container}>
+
+                <Button
+                  style={styles.buttonStyle}
+                  title={"Sign Up New Student"}
+                  onPress={() => this.onSignUpNewStudent()}
+                />
 
                 <Button
                     style={styles.buttonStyle}
