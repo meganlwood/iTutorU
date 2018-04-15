@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 
-import { DATA_AVAILABLE, SIGN_IN_SUCCESS_TUTOR, SIGN_IN_FAIL, SIGN_IN_SUCCESS_PARENT, IS_SIGNED_IN, NOT_SIGNED_IN, TUTOR_DATA, PARENT_DATA, INCOMPLETE_PARENT_PROFILE, MESSAGES, LOADED_SUBJECTS, INCOMPLETE_TUTOR_PROFILE } from "../actions/"
+import { CALENDAR, DATA_AVAILABLE, SIGN_IN_SUCCESS_TUTOR, SIGN_IN_FAIL, SIGN_IN_SUCCESS_PARENT, IS_SIGNED_IN, NOT_SIGNED_IN, TUTOR_DATA, PARENT_DATA, INCOMPLETE_PARENT_PROFILE, MESSAGES, LOADED_SUBJECTS, INCOMPLETE_TUTOR_PROFILE } from "../actions/"
 
 //let dataState = { uid: '', data: [], userType: '' };
 let authState = { signedIn: false, userType: '', loaded: false, error: '', subjects: [] };
@@ -44,7 +44,9 @@ let calData = {
 
 const calReducer = (state = calData, action) => {
   switch(action.type) {
-    case "CAL":
+    case CALENDAR:
+      console.log(action);
+      console.log(action.cal);
       return { ...state, cal: action.cal };
     default:
       return state;

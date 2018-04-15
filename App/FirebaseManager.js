@@ -115,7 +115,7 @@ export function createTutor(uid, name, phoneNumber, experience, degree, subjects
     })
 }
 
-export function createStudent(parentUID, studentName, subject, grade, address, availability, weeklySess) {
+export function createStudent(parentUID, studentName, subject, grade, address, availability, weeklySess, otherInfo) {
     // Set student's information
 
     var defaultLP = {
@@ -150,7 +150,8 @@ export function createStudent(parentUID, studentName, subject, grade, address, a
             learningPlan: defaultLP,
             availability: availability,
             weeklySessions: weeklySess,
-            paidSessions: 0
+            paidSessions: 0,
+            otherInfo: otherInfo,
         })
 
         // Add student to parent
@@ -221,6 +222,14 @@ export function getStudent(uid) {
             resolve(snapshot.val());
         })
     })
+}
+
+export function getStudentAndUID(uid) {
+  return new Promise((resolve, reject) => {
+      firebase.database().ref('students/' + uid).once('value', function(snapshot) {
+          resolve({uid: uid, data: snapshot.val()});
+      })
+  })
 }
 
 export function getStudentsWithoutTutor() {
