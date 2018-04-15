@@ -16,7 +16,7 @@ class SelectAvailability extends Component {
     componentWillMount() {
         var possibilities = [];
         for (var i = 0; i < 5; i++) {
-            for (var j = 2; j < 8; j++) {
+            for (var j = 2; j < 9; j++) {
                 var day = i == 0? "Mon" : i==1? "Tues" : i==2? "Wed" : i==3? "Thurs" : "Fri";
                 possibilities.push(day + " " + j + ":00 PM");
             }
