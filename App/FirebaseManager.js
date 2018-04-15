@@ -376,7 +376,7 @@ export function updateTutorCalendar(uid, cal) {
 }
 
 export function changeEmail(user, newemail) {
-  return new Promsie((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     user.updateEmail(newemail).then(resolve(true)).catch(error => {
       reject(error);
     })

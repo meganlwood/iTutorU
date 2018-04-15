@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
-import { SimpleFormComponent } from '../components/SimpleFormComponent';
+import SimpleFormComponent from '../components/SimpleFormComponent';
 import { Button } from 'react-native-elements';
 import { changeEmail } from '../FirebaseManager';
+
+import {bindActionCreators} from "redux";
+import {connect} from "react-redux";
+import * as Actions from "../actions";
 
 
 class ChangeEmail extends Component {
@@ -15,11 +19,11 @@ class ChangeEmail extends Component {
   onPressReset() {
     changeEmail(this.props.user, this.state.email)
     .then(
-      this.props.navigation.goBack();
+      this.props.navigation.goBack()
     )
     .catch(error => {
       this.setState({ error: error.message });
-    })
+    });
   }
 
   render() {
@@ -33,7 +37,7 @@ class ChangeEmail extends Component {
         />
         <Button
           title={'Reset Email'}
-          onPress={() => onPressReset()}
+          onPress={() => this.onPressReset()}
         />
       </View>
     );
@@ -52,4 +56,4 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators(Actions, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateAccount);
+export default connect(mapStateToProps, mapDispatchToProps)(ChangeEmail);

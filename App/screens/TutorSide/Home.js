@@ -21,6 +21,7 @@ class TutorHome extends Component {
     handleReRender() {
         this.setState({ refreshing: true });
         this.props.loadUserThenTutorData();
+        this.setState({ refreshing: false });
     }
 
     componentWillMount() {
@@ -65,7 +66,13 @@ class TutorHome extends Component {
     render() {
         if (this.props.incomplete_profile) {
             return (
-                <View>
+                <View
+                refreshControl={
+                  <RefreshControl
+                    refreshing={this.state.refreshing}
+                    onRefresh={this.handleReRender}
+                  />}
+                >
                     <Card
                     title={"Incomplete Profile"}
                 >
@@ -82,7 +89,13 @@ class TutorHome extends Component {
         }
 
       else if (this.props.data.frozen === true) {
-        return (<View>
+        return (<View
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this.handleReRender}
+            />}
+          >
           <Text style={{fontStyle: 'italic', textAlign: 'center', marginTop: 150}}>Once you are approved by our team, you will be able to choose students to tutor and see their info here!</Text>
           </View>);
       }
