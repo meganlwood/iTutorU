@@ -119,8 +119,8 @@ function loadTutorData(dispatch, uid, tutorData) {
         var calendar = [];
 
         for (var i in students) {
-            var convoKey = generateConvoKey(uid, students[i]);
             getStudentAndUID(students[i]).then(res => {
+                var convoKey = generateConvoKey(uid, res.uid);
                 var data = res.data;
 
                 if (students[i] == undefined) console.log("NOT COMMENTED OUT");
