@@ -22,6 +22,7 @@ export const NO_MESSAGES = 'NO_MESSAGES';
 export const LOADED_SUBJECTS = 'LOADED SUBJECTS';
 export const INCOMPLETE_TUTOR_PROFILE = 'INCOMPLETE_TUTOR_PROFILE';
 export const CALENDAR = 'CALENDAR';
+export const BLANK_USER = 'BLANK_USER'
 
 
 // Called from Router. First action called when the app opens. Checks if the user is logged in, and if so loads the appropriate data.
@@ -31,13 +32,14 @@ export function isSignedIn() {
             userType(user.uid).then(type => {
                 if (type === 'tutor') {
                     getTutor(user.uid).then(res => {
-                        dispatch({ type: IS_SIGNED_IN, userType: 'tutor' });
+                        dispatch({ type: IS_SIGNED_IN, userType: 'tutor', user: user });
                         loadTutorData(dispatch, user.uid, res);
                     })
                 }
                 else if (type === 'parent') {
                     getParent(user.uid).then(res => {
-                        dispatch({ type: IS_SIGNED_IN, userType: 'parent', data: res, uid: user.uid });
+                        //dispatch({ type: IS_SIGNED_IN, userType: 'parent', data: res, uid: user.uid });
+                        dispatch({ type: IS_SIGNED_IN, userType: 'parent', user: user });
                         loadParentData(dispatch, user.uid, res);
                     })
                 }
@@ -112,7 +114,7 @@ function loadTutorData(dispatch, uid, tutorData) {
 
         getStudentsWithoutTutor().then(res => {
             resdata.unmatchedStudents = res;
-            dispatch({ type: TUTOR_DATA, data: resdata, studentIDs: tutorData.students });
+            dispatch({ type: TUTOR_DATA, data: resdata, studentIDs: tutorData.students, user: user });
         })
 
         var students = tutorData.students;
@@ -141,7 +143,7 @@ function loadTutorData(dispatch, uid, tutorData) {
                 console.log("CALENDAR UNDEFINED");
 
                 if (resdata.students.length === students.length) {
-                    dispatch({ type: TUTOR_DATA, data: resdata, studentIDs: tutorData.students });
+                    dispatch({ type: TUTOR_DATA, data: resdata, studentIDs: tutorData.students, user: user });
 
                     if (tutorData.calendar == undefined) {
                       if (calendar.length > 0) {
@@ -224,12 +226,17 @@ function loadParentData(dispatch, uid, parentData) {
     }
 }
 
+export function loadBlankUser(user) {
+  return (dispatch) => {
+    dispatch({ type: BLANK_USER, user: user });
+  }
+}
 
 // Called when a parent completes their profile.
 export function signUpParent(uid, parentName, phoneNumber, studentName, subject, grade, address, availability, weeklySess, otherInfo) {
     return (dispatch) => {
         createParent(uid, parentName, phoneNumber).then(() => {
-            createStudent(uid, studentName, subject, grade, address, availability, weeklySess ,otherInfo).then(() => {
+            createStudent(uid, studentName, subject, grade, address, availability, weeklySess, otherInfo).then(() => {
                 getParent(uid).then(res => {
                     loadParentData(dispatch, uid, res);
                     dispatch({ type: SIGN_IN_SUCCESS_PARENT });
@@ -260,13 +267,13 @@ export function signInUser(email, password) {
                     getTutor(user.uid).then(data => {
                         loadTutorData(dispatch, user.uid, data);
                     })
-                    dispatch({ type: SIGN_IN_SUCCESS_TUTOR });
+                    dispatch({ type: SIGN_IN_SUCCESS_TUTOR, user: user });
                 }
                 else if (type === 'parent') {
                     getParent(user.uid).then(data => {
                         loadParentData(dispatch, user.uid, data);
                     })
-                    dispatch({ type: SIGN_IN_SUCCESS_PARENT });
+                    dispatch({ type: SIGN_IN_SUCCESS_PARENT, user: user });
                 }
              })
         }).catch(error => {
@@ -317,14 +324,6 @@ export function loadMessages(convoKey) {
     }
 
 
-
-}
-
-export function addCalendar(cal) {
-  return (dispatch) => {
-    dispatch({ type: "CAL", cal: cal});
-
-  }
 
 }
 

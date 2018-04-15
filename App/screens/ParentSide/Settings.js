@@ -33,6 +33,17 @@ class ParentSettings extends Component {
                     onPress={() => Linking.openURL('mailto:info@itutoru.org?subject=App Support&body=')}
                 />
 
+                <Button
+                    style={styles.buttonStyle}
+                    title={"FAQ"}
+                    onPress={() => this.props.navigation.navigate('WebView', { url: 'https://www.itutoru.org/faq'})}
+                />
+
+                <Button
+                    title={"Change Email"}
+                    onPress={() => this.props.navigation.navigate('ChangeEmail')}
+                />
+
             </View>
         );
     }
