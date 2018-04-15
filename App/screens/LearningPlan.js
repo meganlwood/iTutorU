@@ -247,9 +247,9 @@ class LearningPlan extends Component {
 
 const styles = StyleSheet.create({
     buttonStyle: {
-        marginTop: 20,
+        marginTop: 10,
+        marginBottom: 10,
         backgroundColor: '#0093ff',
-        // borderRadius: 30,
         width: 150,
         borderRadius: 10
     },

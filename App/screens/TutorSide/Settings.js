@@ -23,14 +23,14 @@ class TutorSettings extends Component {
         return(
             <View style={styles.container}>
 
-                // <Button style={styles.buttonStyle}
+                {/* <Button style={styles.buttonStyle}
                 //   title={"Approve Timesheet"}
                 //   onPress={() => console.log("approving timesheet")}
-                // />
+                // />*/}
 
                 <Button style={styles.buttonStyle}
                     title={"Find New Students"}
-                    onPress={() => this.props.navigation.navigate('SelectStudent', { onNavigateBack: this.componentDidMount })}
+                    onPress={() => this.props.navigation.navigate('SelectStudent', { onNavigateBack: this.componentDidMount, fromSettings: true })}
                 />
 
                 <Button style={styles.buttonStyle}

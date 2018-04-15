@@ -5,6 +5,7 @@ import * as Actions from "../../actions";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {connectStudentTutor} from "../../FirebaseManager";
+import {NavigationActions} from 'react-navigation';
 
 class SelectStudent extends Component {
 
@@ -29,7 +30,7 @@ class SelectStudent extends Component {
                     buttonStyle={styles.buttonStyle}
                     title={`See Student Availability`}
                     onPress={() =>  {
-                      this.props.navigation.navigate('SelectTime', { studentData: student});
+                      this.props.navigation.navigate('SelectTime', { studentData: student, fromSettings: this.props.navigation.state.params.fromSettings});
                     }}
                 />
 
@@ -50,7 +51,7 @@ class SelectStudent extends Component {
 
 const styles = {
     buttonStyle: {
-        marginTop: 20,
+        marginTop: 10,
         backgroundColor: '#0093ff',
         borderRadius: 30,
     },

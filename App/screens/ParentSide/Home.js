@@ -70,12 +70,6 @@ class ParentHome extends Component {
             <ScrollView style={{ paddingBottom: 10 }}>
                 {this.renderProfileData()}
               </ScrollView>
-
-                // <RNButton
-                //     title={"Sign Out"}
-                //     onPress={() => this.props.signOut()}
-                // />
-
         );
 
 
@@ -84,7 +78,7 @@ class ParentHome extends Component {
 
 const styles = {
     buttonStyle: {
-        marginTop: 20,
+        marginTop: 10,
         backgroundColor: '#0093ff',
         borderRadius: 30,
     },

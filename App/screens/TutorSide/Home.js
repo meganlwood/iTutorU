@@ -43,7 +43,7 @@ class TutorHome extends Component {
                 <Button
                     buttonStyle={styles.buttonStyle}
                     title={'Select a Student'}
-                    onPress={() => this.props.navigation.navigate('SelectStudent', { onNavigateBack: this.handleReRender })}
+                    onPress={() => this.props.navigation.navigate('SelectStudent', { onNavigateBack: this.handleReRender, fromSettings: false })}
                 />
 
             </Card>
@@ -51,6 +51,7 @@ class TutorHome extends Component {
 
         return students.map((student) => {
             return <Card title={`Your student: ${student.name}`}>
+                {/*<Text>Subject: {student.subject}</Text>*/}
                 <Button
                     buttonStyle={styles.buttonStyle}
                     title={`Message ${student.name}`}
@@ -106,7 +107,9 @@ class TutorHome extends Component {
 
 const styles = {
     buttonStyle: {
-        marginTop: 20,
+        paddingRight: '15%',
+        paddingLeft: '15%',
+        marginTop: 0,
         backgroundColor: '#0093ff',
         borderRadius: 30,
     },

@@ -7,6 +7,7 @@ import {Button, FormValidationMessage} from "react-native-elements";
 import * as Actions from "../../actions";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
+import { NavigationActions } from 'react-navigation';
 
 class SignUpTutor extends Component {
 
@@ -58,6 +59,11 @@ class SignUpTutor extends Component {
             const { uid } = this.props.navigation.state.params;
             const { name, phone, exp, degree, city, selectedItems } = this.state;
             this.props.signUpTutor(uid, name, phone, exp, degree, selectedItems, city);
+            const resetAction = NavigationActions.reset({
+              index: 0,
+              actions: [NavigationActions.navigate({ routeName: 'Home' })],
+            });
+            this.props.navigation.dispatch(resetAction);
         }
     }
 

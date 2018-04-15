@@ -7,6 +7,7 @@ import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import SimpleFormComponent from "../../components/SimpleFormComponent";
 import MultilineSimpleFormComponent from "../../components/MultilineSimpleFormComponent";
+import { NavigationActions } from 'react-navigation';
 
 
 class SignUpParent extends Component {
@@ -22,7 +23,7 @@ class SignUpParent extends Component {
         uid: '',
         goBack: false,
         availability: [],
-        weeklySess: 0,
+        weeklySess: 1,
         otherInfo: '',
         selectedIndex: 0,
 
@@ -105,9 +106,12 @@ class SignUpParent extends Component {
 
         if (!error) {
             this.props.signUpParent(uid, parentName, phone, studentName, subject, grade, address, availability, weeklySess);
-            if (this.state.goBack) {
-                this.props.navigation.goBack();
-            }
+            // const resetAction = NavigationActions.reset({
+            //   index: 0,
+            //   actions: [NavigationActions.navigate({ routeName: 'Home' })],
+            // });
+            // this.props.navigation.dispatch(resetAction);
+            this.props.navigation.navigate('Home');
         }
     }
 
@@ -189,6 +193,7 @@ class SignUpParent extends Component {
                         keyboard={null}
                         errorMessage={this.state.addressError}
                     />
+                    <Text style={{marginRight: 20, marginLeft: 20, color: 'gray', fontWeight: 'bold'}}>How many sessions would you like each week?</Text>
                     <ButtonGroup containerStyle={{marginTop: 10, marginBottom: 20, marginRight: 20, marginLeft: 20}}
                       onPress={(index) => {
                         this.setState({selectedIndex: index, weeklySess: index+1});

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import { Button, Card, CheckBox } from 'react-native-elements';
+import { NavigationActions } from 'react-navigation';
 import * as Actions from "../../actions";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
@@ -76,31 +77,50 @@ class SelectTime extends Component {
 
                           // at the end of this segment of code, cal1 will have
                           //  all the scheduled sessions between this tutor & student
-                          var space = time.indexOf(" ");
-                          var words = time.substring(0, space);
-                          var ind = stringToIndex(words);
-                          if (cal1.length == 0) {
-                            cal1 = nextDays(ind, this.state.student.paidSessions / this.state.student.weeklySessions, title, time.substring(space+1));
-                          } else {
-                            cal2 = nextDays(ind, this.state.student.paidSessions / this.state.student.weeklySessions, title, time.substring(space+1));
-                            cal1 = mergeCalendar(cal1, cal2);
+                          if (this.state.student.paidSessions > 0) {
+                            var space = time.indexOf(" ");
+                            var words = time.substring(0, space);
+                            var ind = stringToIndex(words);
+                            if (cal1.length == 0) {
+                              cal1 = nextDays(ind, this.state.student.paidSessions / this.state.student.weeklySessions, title, time.substring(space+1));
+                            } else {
+                              cal2 = nextDays(ind, this.state.student.paidSessions / this.state.student.weeklySessions, title, time.substring(space+1));
+                              cal1 = mergeCalendar(cal1, cal2);
+                            }
                           }
                         }
+
                         i++;
                       });
                       var studentInfo = this.state.student;
                       studentInfo.chosenTimes = times;
                       this.setState({student: studentInfo});
 
+                      if (this.state.student.paidSessions > 0) {
+                        updateStudentCalendar(studentInfo.key, cal1);
+                        cal2 = mergeCalendar(cal1, this.props.currentCal);
+                        updateTutorCalendar(this.props.uid, cal2);
+                      }
                       connectStudentTutor(this.state.student, this.props.uid, arr);
-                      updateStudentCalendar(studentInfo.key, cal1);
-
-                      cal2 = mergeCalendar(cal1, this.props.currentCal);
-                      updateTutorCalendar(this.props.uid, cal2);
 
 
-                      this.props.addCalendar(cal2);
-                      this.props.navigation.navigate('Home');
+
+                      var resetAction;
+                      console.log(this.props.navigation);
+                      if (this.props.navigation.state.params.fromSettings == false) {
+                        resetAction = NavigationActions.reset({
+                          index: 0,
+                          actions: [NavigationActions.navigate({ routeName: 'Home' })],
+                        });
+                      } else {
+                        resetAction = NavigationActions.reset({
+                          index: 0,
+                          actions: [NavigationActions.navigate({ routeName: 'Settings' })],
+                        });
+
+                      }
+                      this.props.navigation.dispatch(resetAction);
+
 
                     }}
                 />
