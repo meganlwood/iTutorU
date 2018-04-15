@@ -5,6 +5,10 @@ import SimpleFormComponent from '../../components/SimpleFormComponent';
 import { DotIndicator } from 'react-native-indicators';
 import {createBlankParent, createBlankTutor} from "../../FirebaseManager";
 
+import {bindActionCreators} from "redux";
+import {connect} from "react-redux";
+import * as Actions from "../../actions";
+
 class CreateAccount extends Component {
 
     state = {
@@ -61,8 +65,9 @@ class CreateAccount extends Component {
         this.setState({ loading: true });
 
         if (this.state.errors.email == "" && this.state.errors.password == "") {
-            createBlankParent(this.state.email, this.state.password).then(uid => {
-                this.props.navigation.navigate('SignUpParent', { uid: uid, goBack: false });
+            createBlankParent(this.state.email, this.state.password).then(user => {
+                this.props.loadBlankUser(user);
+                this.props.navigation.navigate('SignUpParent', { uid: user.uid, goBack: false });
             }).catch(error => {
                 this.state.errors.email = error;
                 this.state.loading = false;
@@ -80,9 +85,10 @@ class CreateAccount extends Component {
         if (this.state.errors.email == "" && this.state.errors.password == "") {
             console.log("attempting to create a tutor");
 
-            createBlankTutor(this.state.email, this.state.password).then(uid => {
+            createBlankTutor(this.state.email, this.state.password).then(user => {
+                this.props.loadBlankUser(user);
                 console.log("should be navigating");
-                this.props.navigation.navigate('SignUpTutor', { uid: uid, goBack: false });
+                this.props.navigation.navigate('SignUpTutor', { uid: user.uid, goBack: false });
             }).catch(error => {
                 console.log("there was an error");
                 console.log(error.message);
@@ -184,4 +190,15 @@ const styles= StyleSheet.create({
     }
 });
 
-export default CreateAccount;
+// we want to have the tutor data and the student data
+function mapStateToProps(state, props) {
+    return  {
+
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators(Actions, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CreateAccount);

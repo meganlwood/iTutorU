@@ -69,7 +69,7 @@ export function createBlankParent(email, password) {
                 parentName: "null",
                 email: email,
             });
-            resolve(user.uid);
+            resolve(user);
         }).catch(error => {
            reject(error);
         });
@@ -83,7 +83,7 @@ export function createBlankTutor(email, password) {
                 name: "null",
                 email: email,
             });
-            resolve(user.uid);
+            resolve(user);
         }).catch(error => {
             reject(error);
         });
@@ -372,6 +372,14 @@ export function updateTutorCalendar(uid, cal) {
           calendar: cal
       });
       resolve(true);
+  })
+}
+
+export function changeEmail(user, newemail) {
+  return new Promsie((resolve, reject) => {
+    user.updateEmail(newemail).then(resolve(true)).catch(error => {
+      reject(error);
+    })
   })
 }
 

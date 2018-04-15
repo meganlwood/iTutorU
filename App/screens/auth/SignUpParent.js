@@ -101,11 +101,11 @@ class SignUpParent extends Component {
     onPressSignUp() {
         var error = this.validateForms();
 
-        const { uid, studentName, parentName, phone, subject, grade, address, availability, weeklySess } = this.state;
+        const { uid, studentName, parentName, phone, subject, grade, address, availability, weeklySess, otherInfo } = this.state;
         console.log("WEEKLY SESSIONS: " + this.state.weeklySess);
 
         if (!error) {
-            this.props.signUpParent(uid, parentName, phone, studentName, subject, grade, address, availability, weeklySess);
+            this.props.signUpParent(uid, parentName, phone, studentName, subject, grade, address, availability, weeklySess, otherInfo);
             // const resetAction = NavigationActions.reset({
             //   index: 0,
             //   actions: [NavigationActions.navigate({ routeName: 'Home' })],

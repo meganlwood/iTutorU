@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
 
-import { CALENDAR, DATA_AVAILABLE, SIGN_IN_SUCCESS_TUTOR, SIGN_IN_FAIL, SIGN_IN_SUCCESS_PARENT, IS_SIGNED_IN, NOT_SIGNED_IN, TUTOR_DATA, PARENT_DATA, INCOMPLETE_PARENT_PROFILE, MESSAGES, LOADED_SUBJECTS, INCOMPLETE_TUTOR_PROFILE } from "../actions/"
+import { CALENDAR, DATA_AVAILABLE, SIGN_IN_SUCCESS_TUTOR, SIGN_IN_FAIL, SIGN_IN_SUCCESS_PARENT, IS_SIGNED_IN, NOT_SIGNED_IN, TUTOR_DATA, PARENT_DATA, INCOMPLETE_PARENT_PROFILE, MESSAGES, LOADED_SUBJECTS, INCOMPLETE_TUTOR_PROFILE, BLANK_USER } from "../actions/"
 
 //let dataState = { uid: '', data: [], userType: '' };
-let authState = { signedIn: false, userType: '', loaded: false, error: '', subjects: [] };
+let authState = { signedIn: false, userType: '', loaded: false, error: '', subjects: [], user: null };
 
 let tutorData =
     {
@@ -94,9 +94,15 @@ const authReducer = (state = authState, action) => {
 
     switch (action.type) {
         case SIGN_IN_SUCCESS_TUTOR:
-            return { ...state, signedIn: true, userType: 'tutor', loaded: true }
+            if (action.user != undefined) {
+              return { ...state, signedIn: true, userType: 'tutor', loaded: true, user: action.user }
+            }
+            else return { ...state, signedIn: true, userType: 'tutor', loaded: true }
         case SIGN_IN_SUCCESS_PARENT:
-            return { ...state, signedIn: true, userType: 'parent', loaded: true}
+            if (action.user != undefined) {
+              return { ...state, signedIn: true, userType: 'parent', loaded: true, user: action.user}
+            }
+            else return { ...state, signedIn: true, userType: 'parent', loaded: true }
         case SIGN_IN_FAIL:
             if (action.error.match(/.*password.*/)) {
                 action.error = "Incorrect password.";
@@ -104,15 +110,15 @@ const authReducer = (state = authState, action) => {
             if (action.error.match(/.*user.*/)) {
                 action.error = "This email does not match any account in our databases.";
             }
-
-
             return { ...state, signedIn: false, loaded: true, error: action.error }
         case IS_SIGNED_IN:
-            return { ...state, signedIn: true, loaded: true, userType: action.userType }
+            return { ...state, signedIn: true, loaded: true, userType: action.userType, user: action.user }
         case NOT_SIGNED_IN:
             return { ...state, signedIn: false, loaded: true }
         case LOADED_SUBJECTS:
             return { ...state, subjects: action.subjects }
+        case BLANK_USER:
+            return { ...state, user: action.user }
         default:
             return state;
     }

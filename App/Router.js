@@ -27,6 +27,7 @@ import ParentSettings from "./screens/ParentSide/Settings";
 import SelectAvailability from "./screens/auth/SelectAvailability";
 import ForgotPassword from "./screens/auth/ForgotPassword";
 import SignUpNewStudent from './screens/ParentSide/SignUpNewStudent';
+import WebViewPage from './components/WebViewPage';
 
 const TutorHomeStack = StackNavigator({
     Home: { screen: TutorHome },
@@ -44,7 +45,8 @@ const TutorLearningPlanStack = StackNavigator({
 const TutorSettingsStack = StackNavigator({
     Settings: { screen: TutorSettings },
     SelectStudent: { screen: SelectStudent },
-    SelectTime: { screen: SelectTime }
+    SelectTime: { screen: SelectTime },
+    WebView: { screen: WebViewPage }
 })
 
 const ParentLearningPlanStack = StackNavigator({
@@ -82,7 +84,8 @@ const SignUpNewStudentStack = StackNavigator({
 
 const ParentSettingsStack = StackNavigator({
     ParentSettingsHome: { screen: ParentSettings },
-    SignUpNewStudent: { screen: SignUpNewStudentStack }
+    SignUpNewStudent: { screen: SignUpNewStudentStack },
+    WebView: { screen: WebViewPage }
 });
 
 
