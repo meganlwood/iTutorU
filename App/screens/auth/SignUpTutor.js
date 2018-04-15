@@ -59,11 +59,7 @@ class SignUpTutor extends Component {
             const { uid } = this.props.navigation.state.params;
             const { name, phone, exp, degree, city, selectedItems } = this.state;
             this.props.signUpTutor(uid, name, phone, exp, degree, selectedItems, city);
-            const resetAction = NavigationActions.reset({
-              index: 0,
-              actions: [NavigationActions.navigate({ routeName: 'Home' })],
-            });
-            this.props.navigation.dispatch(resetAction);
+            this.props.navigation.navigate('Home');
         }
     }
 

@@ -96,9 +96,13 @@ class SelectTime extends Component {
                       studentInfo.chosenTimes = times;
                       this.setState({student: studentInfo});
 
+                      console.log("tutor's current calendar:");
+                      console.log(this.props.currentCal);
                       if (this.state.student.paidSessions > 0) {
                         updateStudentCalendar(studentInfo.key, cal1);
                         cal2 = mergeCalendar(cal1, this.props.currentCal);
+                        console.log("tutor's new calendar:");
+                        console.log(cal2);
                         updateTutorCalendar(this.props.uid, cal2);
                       }
                       connectStudentTutor(this.state.student, this.props.uid, arr);
@@ -166,7 +170,7 @@ function mapStateToProps(state, props) {
         currentStudents: state.tutorReducer.studentIDs,
         uid: state.tutorReducer.data.uid,
         name: state.tutorReducer.data.tutorName,
-        currentCal: state.tutorReducer.data.calendar
+        currentCal: state.calReducer.cal
     }
 }
 

@@ -43,9 +43,6 @@ class SignUpParent extends Component {
 
 
     componentWillMount() {
-        console.log("SIGNUPPARENT PARAMS");
-        console.log(this.props.navigation.state.params);
-
         const { uid, goBack } = this.props.navigation.state.params;
         this.setState({ uid, goBack });
     }
@@ -101,23 +98,14 @@ class SignUpParent extends Component {
     onPressSignUp() {
         var error = this.validateForms();
 
-        const { uid, studentName, parentName, phone, subject, grade, address, availability, weeklySess } = this.state;
-        console.log("WEEKLY SESSIONS: " + this.state.weeklySess);
-
+        const { uid, studentName, parentName, phone, subject, grade, address, availability, weeklySess, otherInfo } = this.state;
         if (!error) {
-            this.props.signUpParent(uid, parentName, phone, studentName, subject, grade, address, availability, weeklySess);
-            // const resetAction = NavigationActions.reset({
-            //   index: 0,
-            //   actions: [NavigationActions.navigate({ routeName: 'Home' })],
-            // });
-            // this.props.navigation.dispatch(resetAction);
+            this.props.signUpParent(uid, parentName, phone, studentName, subject, grade, address, availability, weeklySess, otherInfo);
             this.props.navigation.navigate('Home');
         }
     }
 
     onAvailabilityNavBack(availability) {
-        console.log("availability navback");
-        console.log(availability);
         this.setState({ availability });
     }
 
@@ -213,7 +201,6 @@ class SignUpParent extends Component {
                         buttonStyle={styles.button}
                         title={"Select Availability"}
                         onPress={() => {
-                            console.log("about to navigate...");
                             this.props.navigation.navigate('SelectAvailability', { callback: this.onAvailabilityNavBack.bind(this) })
                         }}
                     />
