@@ -123,8 +123,6 @@ function loadTutorData(dispatch, uid, tutorData) {
                 var convoKey = generateConvoKey(uid, res.uid);
                 var data = res.data;
 
-                if (students[i] == undefined) console.log("NOT COMMENTED OUT");
-                else console.log("COMMENTED OUT");
 
                 resdata.students.push({
                     uid: res.uid,
