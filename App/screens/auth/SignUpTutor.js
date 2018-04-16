@@ -21,6 +21,8 @@ class SignUpTutor extends Component {
         city: '',
         selectedItems: [],
         subjects: [],
+        degree: '',
+        institution: '',
 
         nameError: '',
         phoneError: '',
@@ -28,6 +30,8 @@ class SignUpTutor extends Component {
         degreeError: '',
         cityError: '',
         selectedItemsError: '',
+        degreeError: '',
+        institutionError: '',
     }
 
     componentWillMount() {
@@ -57,8 +61,8 @@ class SignUpTutor extends Component {
         var error = this.validateForm();
         if (!error) {
             const { uid } = this.props.navigation.state.params;
-            const { name, phone, exp, degree, city, selectedItems } = this.state;
-            this.props.signUpTutor(uid, name, phone, exp, degree, selectedItems, city);
+            const { name, phone, exp, degree, city, selectedItems, institution } = this.state;
+            this.props.signUpTutor(uid, name, phone, exp, degree, selectedItems, city, institution);
             this.props.navigation.navigate('Home');
         }
     }
@@ -88,8 +92,12 @@ class SignUpTutor extends Component {
             this.state.degreeError = "Please enter your degree";
             error = true;
         }
+        if (this.state.institution.trim().length == 0) {
+            this.state.institutionError = "Please enter your institution";
+            error = true;
+        }
         if (this.state.city.trim().length == 0) {
-            this.state.cityError = "Please enter your city";
+            this.state.cityError = "Please enter cities you are willing to service (separated by commas)";
             error = true;
         }
         if (this.state.selectedItems.length == 0) {
@@ -166,11 +174,18 @@ class SignUpTutor extends Component {
                         errorMessage={this.state.expError}
                     />
                     <SimpleFormComponent
-                        title={"What is your highest degree obtained?"}
+                        title={"What is your highest degree (and title) obtained? e.g. 'BS Computer Science'"}
                         onChangeText={(text) => this.setState({ degree: text })}
                         secure={false}
                         keyboard={null}
                         errorMessage={this.state.degreeError}
+                    />
+                    <SimpleFormComponent
+                        title={"What institution is your highest degree from?"}
+                        onChangeText={(text) => this.setState({ institution: text })}
+                        secure={false}
+                        keyboard={null}
+                        errorMessage={this.state.institutionError}
                     />
                     <SimpleFormComponent
                         title={"City"}

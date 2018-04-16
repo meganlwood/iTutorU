@@ -5,7 +5,7 @@ import { FormLabel, FormInput, FormValidationMessage } from 'react-native-elemen
 const SimpleFormComponent = (props) => {
 
     return(
-        <View>
+        <View style={props.style}>
             <FormLabel>{props.title}</FormLabel>
             <FormInput
                 onChangeText={(text) => props.onChangeText(text)}

@@ -86,7 +86,6 @@ class CreateAccount extends Component {
             console.log("attempting to create a tutor");
 
             createBlankTutor(this.state.email, this.state.password).then(user => {
-                this.props.loadBlankUser(user);
                 console.log("should be navigating");
                 this.props.navigation.navigate('SignUpTutor', { uid: user.uid, goBack: false });
             }).catch(error => {

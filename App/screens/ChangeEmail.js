@@ -44,6 +44,9 @@ class ChangeEmail extends Component {
   }
 
 }
+<<<<<<< HEAD
+export default ChangeEmail;
+=======
 
 // we want to have the tutor data and the student data
 function mapStateToProps(state, props) {
@@ -57,3 +60,4 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChangeEmail);
+>>>>>>> 550ddd982d80bc6930f3fa580eda408a4f681685

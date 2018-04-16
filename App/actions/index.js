@@ -244,9 +244,9 @@ export function signUpParent(uid, parentName, phoneNumber, studentName, subject,
 }
 
 // Called when a tutor completes their application.
-export function signUpTutor(uid, name, phoneNumber, experience, degree, subjects, city) {
+export function signUpTutor(uid, name, phoneNumber, experience, degree, subjects, city, institution) {
     return (dispatch) => {
-        createTutor(uid, name, phoneNumber, experience, degree, subjects, city).then(() => {
+        createTutor(uid, name, phoneNumber, experience, degree, subjects, city, institution).then(() => {
             getTutor(uid).then(res => {
                 loadTutorData(dispatch, uid, res);
                 dispatch({ type: SIGN_IN_SUCCESS_TUTOR });
