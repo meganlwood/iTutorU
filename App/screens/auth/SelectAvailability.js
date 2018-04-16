@@ -49,16 +49,6 @@ class SelectAvailability extends Component {
     }
 
     renderBoxes() {
-        // return this.state.possibilities.map((item, index) => {
-        //     return (
-        //         <CheckBox
-        //             checked={this.state.checkBoxStates[index]}
-        //             onPress={() => this.toggleCheckBox(index)}
-        //             text={this.state.possibilities[index]}
-        //             disabled={false}
-        //         />
-        //     );
-        // })
         var numOptionsPerDay = this.state.possibilities.length / 5;
         var start = this.state.dayIndex * numOptionsPerDay;
 

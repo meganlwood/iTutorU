@@ -69,7 +69,6 @@ const SignUpStack = StackNavigator(
 const ParentHomeStack = StackNavigator({
     Home: { screen: ParentHome },
     Messaging: { screen: Messaging },
-    //SignUp: { screen: SignUpStack }
     SignUp: { screen: SignUpParent},
     SelectAvailability: { screen: SelectAvailability, tabBarHidden: true }
 });
@@ -253,7 +252,6 @@ const Route = (props) => {
 export class Router extends Component {
 
     componentWillMount() {
-        //this.props.signIn();
         initialize();
         this.props.isSignedIn();
 
@@ -261,19 +259,7 @@ export class Router extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        //change this to be like 'received data from fb'
-        // if (nextProps.loaded) {
-        //     this.setState({ loading: false });
-        // }
     }
-
-    // shouldComponentUpdate(nextProps, nextState) {
-    //     if (this.props.signedIn == false && nextProps.signedIn == true) {
-    //         console.log("User is now signed in");
-    //         return false;
-    //     }
-    //     else return true;
-    // }
 
     renderItems() {
         if (!this.props.loaded) {

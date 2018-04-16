@@ -39,11 +39,11 @@ class ParentSettings extends Component {
                     onPress={() => this.props.navigation.navigate('WebView', { url: 'https://www.itutoru.org/faq'})}
                 />
 
-                <Button
+                {/*<Button
                   buttonStyle={styles.buttonStyle}
                     title={"Change Email"}
                     onPress={() => this.props.navigation.navigate('ChangeEmail')}
-                />
+                />*/}
 
             </View>
         );
