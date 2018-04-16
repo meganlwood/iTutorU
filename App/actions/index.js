@@ -1,10 +1,10 @@
 import {
     getLoggedInUserPromise, getTutor, signIn as FBSignIn, userType, getParent, signOut as FBSignOut,
     getStudent, getStudentsWithoutTutor, createParent, createStudent, createTutor,
-    getMessage, getSubjects, getStudentAndUID
+    getMessage, getSubjects, getStudentAndUID, updateStudentCalendar, updateTutorCalendar
 } from "../FirebaseManager";
 import firebase from "firebase";
-import {generateConvoKey, mergeCalendar} from "../Util";
+import {generateConvoKey, mergeCalendar, stringToIndex, nextDays } from "../Util";
 
 
 export const DATA_AVAILABLE = 'DATA_AVAILABLE';
@@ -81,20 +81,6 @@ export function loadUserThenParentData() {
 
 // Internal function to load Tutor Data
 function loadTutorData(dispatch, uid, tutorData) {
-    /*
-        uid: '',
-        students: [
-            {
-                uid: '',
-                name: '',
-                subject: '',
-                grade: ''
-            }
-            ],
-        address: '',
-        subjects: []
-     */
-
     // If name="null", this means the tutor has created an account, but does not have a completed application.
     if (tutorData.name === "null") {
         loadSubjects(dispatch);
@@ -125,7 +111,6 @@ function loadTutorData(dispatch, uid, tutorData) {
                 var convoKey = generateConvoKey(uid, res.uid);
                 var data = res.data;
 
-
                 resdata.students.push({
                     uid: res.uid,
                     name: data.studentName,
@@ -137,26 +122,47 @@ function loadTutorData(dispatch, uid, tutorData) {
 
                 if (data.calendar != undefined) {
                   calendar.push(data.calendar);
-                  console.log("CALENDAR DEFINED");
-                  console.log(data.calendar);
                 }
-                console.log("CALENDAR UNDEFINED");
+
+                if (data.paidSessions > 0) {
+                  let cal1 = [];
+                  let cal2 = [];
+                  var studentIndex = data.studentName.indexOf(" ");
+                  var tutorIndex = tutorData.name.indexOf(" ");
+                  let title = data.studentName.substring(0, studentIndex) + ": Tutoring Session with " + tutorData.name.substring(0, tutorIndex);
+
+                  for (var time in data.chosenTimes) {
+                    var space = data.chosenTimes[time].indexOf(" ");
+                    var words = data.chosenTimes[time].substring(0, space);
+                    var ind = stringToIndex(words);
+                    if (cal1.length == 0) {
+                      cal1 = nextDays(ind, data.paidSessions / data.weeklySessions, title, data.chosenTimes[time].substring(space+1));
+                    } else {
+                      cal2 = nextDays(ind, data.paidSessions / data.weeklySessions, title, data.chosenTimes[time].substring(space+1));
+                      cal1 = mergeCalendar(cal1, cal2);
+                    }
+                  }
+                  updateStudentCalendar(res.uid, cal1);
+                  cal2 = mergeCalendar(cal1, data.calendar);
+                  data.calendar = cal1;
+                  calendar.push(cal2);
+                }
+
+
 
                 if (resdata.students.length === students.length) {
                     dispatch({ type: TUTOR_DATA, data: resdata, studentIDs: tutorData.students });
 
-                    if (tutorData.calendar == undefined) {
                       if (calendar.length > 0) {
                         var cal = calendar[0];
                         for (var i = 1; i < calendar.length; i++) {
                           cal = mergeCalendar(cal, calendar[i]);
                         }
+                        updateTutorCalendar(data.tutor, cal);
                         dispatch({ type: CALENDAR, cal: cal });
+                      } else {
+                        dispatch({ type: CALENDAR, cal: tutorData.calendar });
                       }
-                    }
-                    else {
-                      dispatch({ type: CALENDAR, cal: tutorData.calendar });
-                    }
                 }
             })
         }
@@ -170,16 +176,7 @@ function loadParentData(dispatch, uid, parentData) {
     //finish this
     var resdata = {
         uid: uid,
-        students: [
-            //{
-                // uid: '',
-                // tutor: {
-                //     uid: '',
-                //     name: '',
-                //     convoKey: '',
-                // }
-            //}
-        ],
+        students: [],
 
     }
 
