@@ -115,6 +115,7 @@ function loadTutorData(dispatch, uid, tutorData) {
                     uid: res.uid,
                     name: data.studentName,
                     subject: data.subject,
+                    subjects: data.subjects,
                     address: data.city,
                     learningPlan: data.learningPlan,
                     convoKey: convoKey,

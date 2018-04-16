@@ -34,6 +34,16 @@ class TutorHome extends Component {
         this.setState({ refreshing: false });
     }
 
+    renderSubjects(subs) {
+      var subjects = '';
+      if (subs == undefined) return '';
+      if (subs.length == 1) return subs[0];
+      subs.map((sub) => {
+        subjects = subjects + ", ";
+      });
+      return subjects.substring(0, subjects.length-1);
+    }
+
     renderCards(students) {
         if (!Array.isArray(students)) {
             return null;
@@ -52,7 +62,10 @@ class TutorHome extends Component {
 
         return students.map((student) => {
             return <Card title={`Your student: ${student.name}`}>
-                {/*<Text>Subject: {student.subject}</Text>*/}
+                <Text style={styles.smallTextStyle}>Subject(s): {this.renderSubjects(student.subjects)}</Text>
+                <Text style={styles.smallTextStyle}>Address:</Text>
+                <Text style={styles.smallTextStyle}>{student.address}</Text>
+
                 <Button
                     buttonStyle={styles.buttonStyle}
                     title={`Message ${student.name}`}
@@ -155,6 +168,10 @@ const styles = {
         alignSelf: 'center',
         borderRadius: 30
     },
+    smallTextStyle: {
+      margin: 5
+
+    }
 
 }
 

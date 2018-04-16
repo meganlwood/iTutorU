@@ -19,7 +19,7 @@ var config2 = {
 };
 
 export function initialize() {
-    firebase.initializeApp(config2);
+    firebase.initializeApp(config);
 }
 
 export function signIn(email, password) {
