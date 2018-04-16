@@ -12,7 +12,7 @@ class ParentLPHome extends Component {
     openLearningPlan = (student) => {
         console.log(student);
 
-        this.props.navigation.navigate('LearningPlan', { data: student.learningPlan, studentuid: student.uid, title: student.studentName })
+        this.props.navigation.navigate('LearningPlan', { data: student.learningPlan, studentuid: student.uid, title: student.studentName, notes: student.officeNotes })
     }
 
 

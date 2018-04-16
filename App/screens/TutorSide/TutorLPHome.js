@@ -13,7 +13,7 @@ class TutorLPHome extends Component {
     openLearningPlan = (student) => {
         console.log(student);
 
-        this.props.navigation.navigate('LearningPlan', { data: student.learningPlan, studentuid: student.uid, title: student.name })
+        this.props.navigation.navigate('LearningPlan', { data: student.learningPlan, studentuid: student.uid, title: student.name, notes: student.officeNotes })
     }
 
     render() {

@@ -40,7 +40,7 @@ class ParentHome extends Component {
                 <Card
                     title={student.studentName}
                 >
-                    <Text style={styles.text}>{`${student.studentName}'s tutor: ${tutor.name}`}</Text>
+                    <Text style={styles.text}>{`Tutor: ${tutor.name}`}</Text>
                     <Text style={styles.text}>Degree: {tutor.degree}</Text>
                     <Text style={styles.text}>School: {tutor.institution}</Text>
                     <Button style={styles.buttonStyle}
@@ -122,7 +122,7 @@ const styles = {
         alignSelf: 'center',
         padding: '2.5%',
         margin: 0
-    }
+    },
 }
 
 function mapStateToProps(state, props) {
