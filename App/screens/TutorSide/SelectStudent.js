@@ -14,15 +14,44 @@ class SelectStudent extends Component {
         console.log(this.props);
     }
 
+    renderSubjects(subs) {
+      var subjects = '';
+      if (subs == undefined) return '';
+      if (subs.length == 1) return subs[0];
+      subs.map((sub) => {
+        subjects = subjects + ", ";
+      });
+      return subjects.substring(0, subjects.length-1);
+    }
+
     renderCards(students) {
-        if (!Array.isArray(students) || students.length == 0) {
+        let relStudents = [];
+
+        var x = this.props.subjects;
+        students.map((student) => {
+          if (student.subjects == undefined) {
+
+          } else {
+            for (var i = 0;i < student.subjects.length; i++) {
+              for (var j = 0; j < x.length; j++) {
+                if (student.subjects[i] == x[j]) {
+                  relStudents.push(student);
+                  break;
+                }
+              }
+            }
+          }
+        });
+
+        if (relStudents.length == 0) {
             return(<Text style={styles.textStyle}>No new students, check back later!</Text>);
         }
 
-        return students.map((student, i) => {
+
+        return relStudents.map((student, i) => {
             return <Card title={`Student`} key={i}>
                 <Text >Grade: {student.grade}</Text>
-                <Text >Subject: {student.subject}</Text>
+                <Text >Subject(s): {this.renderSubjects(student.subjects)}</Text>
                 <Text >City: {student.city}</Text>
 
 
@@ -68,6 +97,7 @@ function mapStateToProps(state, props) {
         unmatchedStudents: state.tutorReducer.data.unmatchedStudents,
         currentStudents: state.tutorReducer.studentIDs,
         uid: state.tutorReducer.data.uid,
+        subjects: state.tutorReducer.data.subjects
     }
 }
 
