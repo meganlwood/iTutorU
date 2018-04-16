@@ -58,12 +58,17 @@ class SignUpTutor extends Component {
     }
 
     onPressSignUp() {
+        const { goBack } = this.props.navigation.state.params;
+
         var error = this.validateForm();
         if (!error) {
             const { uid } = this.props.navigation.state.params;
             const { name, phone, exp, degree, city, selectedItems, institution } = this.state;
             this.props.signUpTutor(uid, name, phone, exp, degree, selectedItems, city, institution);
-            this.props.navigation.navigate('Home');
+            if (goBack) {
+              this.props.navigation.goBack();
+            }
+            else this.props.navigation.navigate('Home');
         }
     }
 

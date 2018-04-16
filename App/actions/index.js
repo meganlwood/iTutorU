@@ -234,10 +234,10 @@ function loadParentData(dispatch, uid, parentData) {
 // }
 
 // Called when a parent completes their profile.
-export function signUpParent(uid, parentName, phoneNumber, studentName, subject, grade, address, availability, weeklySess, otherInfo) {
+export function signUpParent(uid, parentName, phoneNumber, studentName, subject, grade, address, city, availability, weeklySess, otherInfo) {
     return (dispatch) => {
         createParent(uid, parentName, phoneNumber).then(() => {
-            createStudent(uid, studentName, subject, grade, address, availability, weeklySess, otherInfo).then(() => {
+            createStudent(uid, studentName, subject, grade, address, city, availability, weeklySess, otherInfo).then(() => {
                 getParent(uid).then(res => {
                     loadParentData(dispatch, uid, res);
                     dispatch({ type: SIGN_IN_SUCCESS_PARENT });

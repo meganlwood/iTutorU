@@ -69,7 +69,9 @@ const SignUpStack = StackNavigator(
 const ParentHomeStack = StackNavigator({
     Home: { screen: ParentHome },
     Messaging: { screen: Messaging },
-    SignUp: { screen: SignUpStack }
+    //SignUp: { screen: SignUpStack }
+    SignUp: { screen: SignUpParent},
+    SelectAvailability: { screen: SelectAvailability, tabBarHidden: true }
 });
 
 const ForgotPassStack = StackNavigator({
