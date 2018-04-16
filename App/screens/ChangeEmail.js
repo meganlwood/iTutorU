@@ -15,10 +15,10 @@ class ChangeEmail extends Component {
   onPressReset() {
     changeEmail(this.props.user, this.state.email)
     .then(
-      this.props.navigation.goBack();
+      this.props.navigation.goBack()
     )
     .catch(error => {
-      this.setState({ error: error.message });
+      this.setState({ error: error.message })
     })
   }
 
@@ -40,16 +40,4 @@ class ChangeEmail extends Component {
   }
 
 }
-
-// we want to have the tutor data and the student data
-function mapStateToProps(state, props) {
-    return  {
-      user: state.authReducer.user,
-    }
-}
-
-function mapDispatchToProps(dispatch) {
-    return bindActionCreators(Actions, dispatch);
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(CreateAccount);
+export default ChangeEmail;

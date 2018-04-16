@@ -19,7 +19,7 @@ var config2 = {
 };
 
 export function initialize() {
-    firebase.initializeApp(config);
+    firebase.initializeApp(config2);
 }
 
 export function signIn(email, password) {
@@ -100,7 +100,7 @@ export function createParent(uid, parentName, phoneNumber) {
     })
 }
 
-export function createTutor(uid, name, phoneNumber, experience, degree, subjects, city) {
+export function createTutor(uid, name, phoneNumber, experience, degree, subjects, city, institution) {
     return new Promise((resolve, reject) => {
         firebase.database().ref('tutors/' + uid).update({
             name: name,
@@ -109,7 +109,8 @@ export function createTutor(uid, name, phoneNumber, experience, degree, subjects
             degree: degree,
             subjects: subjects,
             city: city,
-            frozen: true
+            frozen: true,
+            institution: institution,
         });
         resolve(true);
     })

@@ -20,6 +20,9 @@ class SignUpParent extends Component {
         subject: '',
         grade: '',
         address: '',
+        city: '',
+        zip: '',
+        state: '',
         uid: '',
         goBack: false,
         availability: [],
@@ -34,6 +37,9 @@ class SignUpParent extends Component {
         subjectsError: '',
         gradeError: '',
         addressError: '',
+        cityError: '',
+        zipError: '',
+        stateError: '',
         sessionsError: '',
         submitError: '',
 
@@ -55,6 +61,9 @@ class SignUpParent extends Component {
         this.state.subjectsError = '';
         this.state.gradeError = '';
         this.state.addressError = '';
+        this.state.cityError = '';
+        this.state.zipError = '';
+        this.state.stateError = '';
         this.state.sessionsError = '';
         this.state.submitError = '';
 
@@ -80,6 +89,18 @@ class SignUpParent extends Component {
         }
         if (this.state.address.trim().length == 0) {
             this.state.addressError = 'Please enter your address';
+            error = true;
+        }
+        if (this.state.city.trim().length == 0) {
+            this.state.addressError = 'Please enter your city';
+            error = true;
+        }
+        if (this.state.zip.trim().length == 0) {
+            this.state.addressError = 'Please enter your zip code';
+            error = true;
+        }
+        if (this.state.state.trim().length == 0) {
+            this.state.addressError = 'Please enter your state';
             error = true;
         }
         if (this.state.weeklySess != 1 && this.state.weeklySess != 2) {
@@ -174,13 +195,53 @@ class SignUpParent extends Component {
                         keyboard={'numeric'}
                         errorMessage={this.state.gradeError}
                     />
-                    <SimpleFormComponent
-                        title={"Address"}
-                        onChangeText={(text) => this.setState({ address: text })}
-                        secure={false}
-                        keyboard={null}
-                        errorMessage={this.state.addressError}
-                    />
+                    <Card
+                      title={"Address"}
+                      containerStyle={{ marginBottom: 10 }}
+                    >
+                      <SimpleFormComponent
+                          title={"Address"}
+                          onChangeText={(text) => this.setState({ address: text })}
+                          secure={false}
+                          keyboard={null}
+                          errorMessage={this.state.addressError}
+                      />
+                      <SimpleFormComponent
+                          title={"City"}
+                          onChangeText={(text) => this.setState({ city: text })}
+                          secure={false}
+                          keyboard={null}
+                          errorMessage={this.state.cityError}
+                      />
+                      <View style={{ flexDirection: 'row', flex: 1 }}>
+                        <SimpleFormComponent
+                            title={"Zip Code"}
+                            onChangeText={(text) => this.setState({ zip: text })}
+                            secure={false}
+                            keyboard={'numeric'}
+                            errorMessage={this.state.zipError}
+                            style={{flex: 1}}
+                            maxLength={5}
+                        />
+                        <SimpleFormComponent
+                            title={"State"}
+                            onChangeText={(text) => {
+                              var upper = text.toUpperCase();
+                              console.log(upper);
+                              this.setState({ state: upper })
+                            }}
+                            value={this.state.state}
+                            secure={false}
+                            keyboard={null}
+                            errorMessage={this.state.stateError}
+                            style={{ flex: 1}}
+                            maxLength={2}
+                        />
+                      </View>
+
+                    </Card>
+
+
                     <Text style={{marginRight: 20, marginLeft: 20, color: 'gray', fontWeight: 'bold'}}>How many sessions would you like each week?</Text>
                     <ButtonGroup containerStyle={{marginTop: 10, marginBottom: 20, marginRight: 20, marginLeft: 20}}
                       onPress={(index) => {
