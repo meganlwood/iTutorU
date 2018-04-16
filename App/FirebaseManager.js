@@ -359,7 +359,8 @@ export function updateStudentCalendar(uid, cal) {
   console.log("update calendar for user: " + uid);
   return new Promise((resolve, reject) => {
       firebase.database().ref('students/' + uid).update({
-          calendar: cal
+          calendar: cal,
+          paidSessions: 0
       });
       resolve(true);
   })
