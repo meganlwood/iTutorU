@@ -122,7 +122,7 @@ const styles = {
         alignSelf: 'center',
         padding: '2.5%',
         margin: 0
-    }
+    },
 }
 
 function mapStateToProps(state, props) {

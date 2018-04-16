@@ -131,11 +131,14 @@ class LearningPlan extends Component {
         nextIndex: 1,
         currentlyEditing: null,
         studentuid: '',
+        notes: '',
     }
 
     componentWillMount() {
-        const { data, studentuid } = this.props.navigation.state.params;
-        this.setState({ data, studentuid, nextIndex: data.length });
+        const { data, studentuid, notes } = this.props.navigation.state.params;
+        console.log(notes);
+        console.log(this.props.navigation.state.params);
+        this.setState({ data, studentuid, nextIndex: data.length, notes: notes });
     }
 
     addCard() {
@@ -230,8 +233,21 @@ class LearningPlan extends Component {
                     }
                     extraData={this.state}
                     renderEndComponent={() => {
+                        console.log(this.state);
+                        console.log(this.state.notes);
                         return(
-                            <Button title={"New Card"} buttonStyle={[styles.buttonStyle, { alignSelf: 'center', marginBottom: 20 }]} onPress={() => this.addCard()} ></Button>
+                            <View>
+                              <Button title={"New Card"} buttonStyle={[styles.buttonStyle, { alignSelf: 'center', marginBottom: 20 }]} onPress={() => this.addCard()} ></Button>
+                              {this.state.notes != '' &&
+                                <Card
+                                    containerStyle={{ borderColor: 'red', borderWidth: 1 }}
+                                    title={"Notes from iTutorU"}
+                                  >
+                                  <Text>{this.state.notes}</Text>
+                                </Card>
+                              }
+
+                            </View>
                         );
                     }
                     }

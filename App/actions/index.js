@@ -201,7 +201,7 @@ function loadParentData(dispatch, uid, parentData) {
                 if (tutorUID) {
                     getTutor(tutorUID).then(tutorRes => {
                         var convoKey = generateConvoKey(studentID, tutorUID);
-                        studentRes.tutor = { uid: tutorUID, name: tutorRes.name, convoKey: convoKey };
+                        studentRes.tutor = { uid: tutorUID, name: tutorRes.name, convoKey: convoKey, degree: tutorRes.degree, institution: tutorRes.institution };
                         resdata.students.push(studentRes);
                         if (resdata.students.length == studentArr.length) {
                             var cal = [];
