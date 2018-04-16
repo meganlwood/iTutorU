@@ -40,6 +40,7 @@ class ParentSettings extends Component {
                 />
 
                 <Button
+                  style={styles.buttonStyle}
                     title={"Change Email"}
                     onPress={() => this.props.navigation.navigate('ChangeEmail')}
                 />
@@ -53,7 +54,7 @@ class ParentSettings extends Component {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
-        paddingTop: '10%',
+        paddingTop: 0,
         height: '100%',
         flexDirection: 'column',
     },

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Button as RNButton, ScrollView } from 'react-native';
+import { View, Text, Button as RNButton, ScrollView, RefreshControl } from 'react-native';
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import { Card, Button } from 'react-native-elements';
@@ -7,6 +7,21 @@ import { Card, Button } from 'react-native-elements';
 import * as Actions from '../../actions/index';
 
 class ParentHome extends Component {
+
+    constructor(props) {
+      super(props);
+      this.state = {
+        refreshing: false
+      }
+
+      this.handleReRender = this.handleReRender.bind(this);
+    }
+
+    handleReRender() {
+      this.setState({refreshing: true});
+      this.props.loadUserThenParentData();
+      this.setState({refreshing: false});
+    }
 
 
     renderStudentCard(student) {
@@ -67,7 +82,13 @@ class ParentHome extends Component {
 
     render() {
         return(
-            <ScrollView style={{ paddingBottom: 10 }}>
+            <ScrollView style={{ paddingBottom: 10 }}
+                refreshControl={
+                  <RefreshControl
+                    refreshing={this.state.refreshing}
+                    onRefresh={this.handleReRender}
+                  />}
+              >
                 {this.renderProfileData()}
               </ScrollView>
         );

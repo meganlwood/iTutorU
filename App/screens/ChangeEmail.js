@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
-import { SimpleFormComponent } from '../components/SimpleFormComponent';
+import SimpleFormComponent from '../components/SimpleFormComponent';
 import { Button } from 'react-native-elements';
 import { changeEmail } from '../FirebaseManager';
+
+import {bindActionCreators} from "redux";
+import {connect} from "react-redux";
+import * as Actions from "../actions";
 
 
 class ChangeEmail extends Component {
@@ -18,8 +22,8 @@ class ChangeEmail extends Component {
       this.props.navigation.goBack()
     )
     .catch(error => {
-      this.setState({ error: error.message })
-    })
+      this.setState({ error: error.message });
+    });
   }
 
   render() {
@@ -33,11 +37,27 @@ class ChangeEmail extends Component {
         />
         <Button
           title={'Reset Email'}
-          onPress={() => onPressReset()}
+          onPress={() => this.onPressReset()}
         />
       </View>
     );
   }
 
 }
+<<<<<<< HEAD
 export default ChangeEmail;
+=======
+
+// we want to have the tutor data and the student data
+function mapStateToProps(state, props) {
+    return  {
+      user: state.authReducer.user,
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators(Actions, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChangeEmail);
+>>>>>>> 550ddd982d80bc6930f3fa580eda408a4f681685
