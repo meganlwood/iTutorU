@@ -56,7 +56,7 @@ const styles = {
     textStyle: {
         alignSelf: 'center',
         marginTop: 20,
-        fontSize: 15,
+        fontSize: 16,
         margin: 10,
     },
     containerStyle: {

@@ -243,7 +243,7 @@ class LearningPlan extends Component {
                                     containerStyle={{ borderColor: 'red', borderWidth: 1 }}
                                     title={"Notes from iTutorU"}
                                   >
-                                  <Text>{this.state.notes}</Text>
+                                  <Text style={{fontSize: 16}}>{this.state.notes}</Text>
                                 </Card>
                               }
 

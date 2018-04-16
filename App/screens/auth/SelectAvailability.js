@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import { Button, Card, CheckBox } from 'react-native-elements';
 
 const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];

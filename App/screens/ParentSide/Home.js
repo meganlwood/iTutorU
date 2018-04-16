@@ -43,7 +43,7 @@ class ParentHome extends Component {
                     <Text style={styles.text}>{`Tutor: ${tutor.name}`}</Text>
                     <Text style={styles.text}>Degree: {tutor.degree}</Text>
                     <Text style={styles.text}>School: {tutor.institution}</Text>
-                    <Button style={styles.buttonStyle}
+                    <Button buttonStyle={styles.buttonStyle}
                         title={`Message ${tutor.name}`}
                         onPress={() => this.props.navigation.navigate('Messaging', { uid: student.uid, convoKey: student.tutor.convoKey, otherPersonUID: student.tutor.uid, otherPersonName: student.tutor.name })}
                     />
@@ -60,7 +60,7 @@ class ParentHome extends Component {
             return <Card
                 title={"Incomplete Profile"}
             >
-                <Text>Hey there! We noticed you didn't complete your profile. Until you do so, we won't be able to match you with a tutor. Press the button below to continue!</Text>
+                <Text style={styles.text}>Hey there! We noticed you didn't complete your profile. Until you do so, we won't be able to match you with a tutor. Press the button below to continue!</Text>
                 <Button
                     title={"Finish Sign Up"}
                     onPress={() => this.props.navigation.navigate('SignUp', { uid: this.props.data.uid, goBack: true })}
@@ -75,7 +75,7 @@ class ParentHome extends Component {
                     return this.renderStudentCard(student)
                 })
             }
-            else return <Text>Loading</Text>;
+            else return <Text style={styles.text}>Loading</Text>;
 
 
 

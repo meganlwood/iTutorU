@@ -50,9 +50,9 @@ class SelectStudent extends Component {
 
         return relStudents.map((student, i) => {
             return <Card title={`Student`} key={i}>
-                <Text >Grade: {student.grade}</Text>
-                <Text >Subject(s): {this.renderSubjects(student.subjects)}</Text>
-                <Text >City: {student.city}</Text>
+                <Text style={styles.standardTextStyle}>Grade: {student.grade}</Text>
+                <Text style={styles.standardTextStyle}>Subject(s): {this.renderSubjects(student.subjects)}</Text>
+                <Text style={styles.standardTextStyle}>City: {student.city}</Text>
 
 
                 <Button
@@ -87,7 +87,13 @@ const styles = {
     textStyle: {
       textAlign: 'center',
       fontStyle: 'italic',
-      marginTop: '50%'
+      marginTop: '50%',
+      fontSize: 16
+    },
+    standardTextStyle: {
+      textAlign: 'center',
+      fontSize: 16,
+      margin: 5
     }
 }
 
