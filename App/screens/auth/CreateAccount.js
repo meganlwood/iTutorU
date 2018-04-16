@@ -66,7 +66,6 @@ class CreateAccount extends Component {
 
         if (this.state.errors.email == "" && this.state.errors.password == "") {
             createBlankParent(this.state.email, this.state.password).then(user => {
-                this.props.loadBlankUser(user);
                 this.props.navigation.navigate('SignUpParent', { uid: user.uid, goBack: false });
             }).catch(error => {
                 this.state.errors.email = error;

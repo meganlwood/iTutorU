@@ -119,10 +119,16 @@ class SignUpParent extends Component {
     onPressSignUp() {
         var error = this.validateForms();
 
-        const { uid, studentName, parentName, phone, subject, grade, address, availability, weeklySess, otherInfo } = this.state;
+        const { uid, studentName, parentName, phone, subject, grade, address, city, zip, state, availability, weeklySess, otherInfo } = this.state;
+        var fullAddress = address + ", " + city + ", " + state + " " + zip;
         if (!error) {
-            this.props.signUpParent(uid, parentName, phone, studentName, subject, grade, address, availability, weeklySess, otherInfo);
-            this.props.navigation.navigate('Home');
+            this.props.signUpParent(uid, parentName, phone, studentName, subject, grade, fullAddress, city, availability, weeklySess, otherInfo);
+            if (this.state.goBack) {
+              this.props.navigation.goBack();
+            }
+            else {
+              this.props.navigation.navigate('Home');
+            }
         }
     }
 
@@ -215,15 +221,6 @@ class SignUpParent extends Component {
                       />
                       <View style={{ flexDirection: 'row', flex: 1 }}>
                         <SimpleFormComponent
-                            title={"Zip Code"}
-                            onChangeText={(text) => this.setState({ zip: text })}
-                            secure={false}
-                            keyboard={'numeric'}
-                            errorMessage={this.state.zipError}
-                            style={{flex: 1}}
-                            maxLength={5}
-                        />
-                        <SimpleFormComponent
                             title={"State"}
                             onChangeText={(text) => {
                               var upper = text.toUpperCase();
@@ -237,6 +234,16 @@ class SignUpParent extends Component {
                             style={{ flex: 1}}
                             maxLength={2}
                         />
+                        <SimpleFormComponent
+                            title={"Zip Code"}
+                            onChangeText={(text) => this.setState({ zip: text })}
+                            secure={false}
+                            keyboard={'numeric'}
+                            errorMessage={this.state.zipError}
+                            style={{flex: 1}}
+                            maxLength={5}
+                        />
+
                       </View>
 
                     </Card>
