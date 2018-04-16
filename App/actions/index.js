@@ -122,6 +122,7 @@ function loadTutorData(dispatch, uid, tutorData) {
                     address: data.address,
                     learningPlan: data.learningPlan,
                     convoKey: convoKey,
+                    chosenTimes: data.chosenTimes
                 });
 
                 if (data.calendar != undefined) {

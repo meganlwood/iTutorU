@@ -23,6 +23,15 @@ class ParentHome extends Component {
       this.setState({refreshing: false});
     }
 
+    renderTimes(times) {
+      var t = '';
+      if (times.length == 1) return times[0];
+      times.map((time) => {
+        t = t + ", " + time;
+      });
+      return t.substring(2);
+    }
+
 
     renderStudentCard(student) {
         var tutor = student.tutor;
@@ -43,6 +52,7 @@ class ParentHome extends Component {
                     <Text style={styles.text}>{`Tutor: ${tutor.name}`}</Text>
                     <Text style={styles.text}>Degree: {tutor.degree}</Text>
                     <Text style={styles.text}>School: {tutor.institution}</Text>
+                    <Text style={styles.text}>Time: {this.renderTimes(student.chosenTimes)}</Text>
                     <Button buttonStyle={styles.buttonStyle}
                         title={`Message ${tutor.name}`}
                         onPress={() => this.props.navigation.navigate('Messaging', { uid: student.uid, convoKey: student.tutor.convoKey, otherPersonUID: student.tutor.uid, otherPersonName: student.tutor.name })}
