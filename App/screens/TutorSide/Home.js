@@ -63,8 +63,7 @@ class TutorHome extends Component {
         return students.map((student) => {
             return <Card title={`Your student: ${student.name}`}>
                 <Text style={styles.smallTextStyle}>Subject(s): {this.renderSubjects(student.subjects)}</Text>
-                <Text style={styles.smallTextStyle}>Address:</Text>
-                <Text style={styles.smallTextStyle}>{student.address}</Text>
+                <Text style={styles.smallTextStyle}>Address: {student.address}</Text>
 
                 <Button
                     buttonStyle={styles.buttonStyle}
@@ -135,7 +134,7 @@ const styles = {
     buttonStyle: {
         paddingRight: '15%',
         paddingLeft: '15%',
-        marginTop: 0,
+        marginTop: 10,
         backgroundColor: '#0093ff',
         borderRadius: 30,
     },
@@ -170,7 +169,6 @@ const styles = {
     },
     smallTextStyle: {
       margin: 5
-
     }
 
 }

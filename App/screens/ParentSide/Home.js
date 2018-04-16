@@ -41,6 +41,8 @@ class ParentHome extends Component {
                     title={student.studentName}
                 >
                     <Text style={styles.text}>{`${student.studentName}'s tutor: ${tutor.name}`}</Text>
+                    <Text style={styles.text}>Degree: {tutor.degree}</Text>
+                    <Text style={styles.text}>School: {tutor.institution}</Text>
                     <Button style={styles.buttonStyle}
                         title={`Message ${tutor.name}`}
                         onPress={() => this.props.navigation.navigate('Messaging', { uid: student.uid, convoKey: student.tutor.convoKey, otherPersonUID: student.tutor.uid, otherPersonName: student.tutor.name })}

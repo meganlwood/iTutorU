@@ -95,6 +95,8 @@ function loadTutorData(dispatch, uid, tutorData) {
             unmatchedStudents: [],
             frozen: tutorData.frozen,
             tutorName: tutorData.name,
+            degree: tutorData.degree,
+            institution: tutorData.institution
             //calendar: tutorData.calendar
         }
 
@@ -116,7 +118,8 @@ function loadTutorData(dispatch, uid, tutorData) {
                     name: data.studentName,
                     subject: data.subject,
                     subjects: data.subjects,
-                    address: data.city,
+                    city: data.city,
+                    address: data.address,
                     learningPlan: data.learningPlan,
                     convoKey: convoKey,
                 });
