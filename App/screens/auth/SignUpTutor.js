@@ -134,7 +134,7 @@ class SignUpTutor extends Component {
 
 
         return(
-            <KeyboardAvoidingView style={{ backgroundColor: 'white', height: '100%'}} behavior={"position"} keyboardVerticalOffset={-60}>
+            <KeyboardAvoidingView style={{ backgroundColor: 'white', height: '100%'}} behavior={"position"} keyboardVerticalOffset={-180}>
 
                 <ScrollView>
                     <View style={{ height: 50 }}></View>

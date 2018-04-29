@@ -152,7 +152,7 @@ class SignUpParent extends Component {
 
     render() {
         return (
-            <KeyboardAvoidingView style={styles.container} behavior={"position"} keyboardVerticalOffset={-60} >
+            <KeyboardAvoidingView style={styles.container} behavior={"position"} keyboardVerticalOffset={-180} >
                 <ScrollView>
                     <View style={{ height: 50 }}></View>
                     <Text style={styles.title}>New Student Sign Up</Text>

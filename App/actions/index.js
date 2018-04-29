@@ -45,6 +45,8 @@ export function isSignedIn() {
                 }
             })
         }).catch(() => {
+            console.log("about to load the subjects");
+            console.log(dispatch);
             loadSubjects(dispatch);
             dispatch({ type: NOT_SIGNED_IN });
         })
@@ -79,11 +81,13 @@ export function loadUserThenParentData() {
     }
 }
 
+
 // Internal function to load Tutor Data
 function loadTutorData(dispatch, uid, tutorData) {
     // If name="null", this means the tutor has created an account, but does not have a completed application.
     if (tutorData.name === "null") {
         loadSubjects(dispatch);
+        console.log(dispatch);
         dispatch({ type: INCOMPLETE_TUTOR_PROFILE, data: { uid }});
     }
     else {

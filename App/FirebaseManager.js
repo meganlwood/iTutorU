@@ -349,7 +349,6 @@ export function resetPassword(email) {
 }
 
 export function getSubjects() {
-    console.log("getting subjects");
     return new Promise((resolve, reject) => {
         firebase.database().ref('subjects').once('value', function(snapshot) {
             resolve(snapshot.val());
