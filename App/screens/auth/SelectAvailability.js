@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import { Button, Card, CheckBox } from 'react-native-elements';
 
 const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
@@ -49,16 +49,6 @@ class SelectAvailability extends Component {
     }
 
     renderBoxes() {
-        // return this.state.possibilities.map((item, index) => {
-        //     return (
-        //         <CheckBox
-        //             checked={this.state.checkBoxStates[index]}
-        //             onPress={() => this.toggleCheckBox(index)}
-        //             text={this.state.possibilities[index]}
-        //             disabled={false}
-        //         />
-        //     );
-        // })
         var numOptionsPerDay = this.state.possibilities.length / 5;
         var start = this.state.dayIndex * numOptionsPerDay;
 

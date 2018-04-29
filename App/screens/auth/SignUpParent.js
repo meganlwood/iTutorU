@@ -249,7 +249,7 @@ class SignUpParent extends Component {
                     </Card>
 
 
-                    <Text style={{marginRight: 20, marginLeft: 20, color: 'gray', fontWeight: 'bold'}}>How many sessions would you like each week?</Text>
+                    <Text style={{marginRight: 20, marginLeft: 20, color: 'gray', fontWeight: 'bold', fontSize: 16}}>How many sessions would you like each week?</Text>
                     <ButtonGroup containerStyle={{marginTop: 10, marginBottom: 20, marginRight: 20, marginLeft: 20}}
                       onPress={(index) => {
                         this.setState({selectedIndex: index, weeklySess: index+1});
@@ -281,7 +281,7 @@ class SignUpParent extends Component {
                         <View style={{ justifyContent: 'center' }}>
                         {this.state.availability.map((item, index) => {
                             return (
-                                <Text style={{ alignSelf: 'center', marginBottom: 5, }}>{item}</Text>
+                                <Text style={{ alignSelf: 'center', marginBottom: 5, fontSize: 16}}>{item}</Text>
                             )
                         })}
                         </View>

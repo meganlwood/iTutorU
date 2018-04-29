@@ -16,34 +16,34 @@ class ParentSettings extends Component {
             <View style={styles.container}>
 
                 <Button
-                  style={styles.buttonStyle}
+                  buttonStyle={styles.buttonStyle}
                   title={"Sign Up New Student"}
                   onPress={() => this.onSignUpNewStudent()}
                 />
 
                 <Button
-                    style={styles.buttonStyle}
+                    buttonStyle={styles.buttonStyle}
                     title={"Sign Out"}
                     onPress={() => this.props.signOut()}
                 />
 
                 <Button
-                    style={styles.buttonStyle}
+                    buttonStyle={styles.buttonStyle}
                     title={"Contact Support"}
                     onPress={() => Linking.openURL('mailto:info@itutoru.org?subject=App Support&body=')}
                 />
 
                 <Button
-                    style={styles.buttonStyle}
+                    buttonStyle={styles.buttonStyle}
                     title={"FAQ"}
                     onPress={() => this.props.navigation.navigate('WebView', { url: 'https://www.itutoru.org/faq'})}
                 />
 
-                <Button
-                  style={styles.buttonStyle}
+                {/*<Button
+                  buttonStyle={styles.buttonStyle}
                     title={"Change Email"}
                     onPress={() => this.props.navigation.navigate('ChangeEmail')}
-                />
+                />*/}
 
             </View>
         );
@@ -59,7 +59,8 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
     },
     buttonStyle: {
-      margin: 20
+      margin: 20,
+      backgroundColor: '#0093ff'
     }
 });
 

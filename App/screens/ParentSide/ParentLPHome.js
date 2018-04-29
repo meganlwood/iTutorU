@@ -27,7 +27,7 @@ class ParentLPHome extends Component {
                                 style={styles.item}
                                 onPress={() => this.openLearningPlan(data.item)}
                             >
-                                <Text>{data.item.studentName}</Text>
+                                <Text style={styles.textStyle}>{data.item.studentName}</Text>
                                 <Icon name={'angle-right'} size={18} color={'gray'} />
 
                             </TouchableOpacity>
@@ -50,6 +50,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center'
+    },
+    textStyle: {
+      fontSize: 16
     }
 })
 

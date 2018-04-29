@@ -23,7 +23,7 @@ class TutorLPHome extends Component {
                 <Card
                     title={"No Students"}
                 >
-                    <Text style={{ alignSelf: 'center' }}>You don't have any students yet.</Text>
+                    <Text style={{ alignSelf: 'center', fontSize: 16 }}>You don't have any students yet.</Text>
                 </Card>
             );
         }
@@ -38,7 +38,7 @@ class TutorLPHome extends Component {
                                 style={styles.item}
                                 onPress={() => this.openLearningPlan(data.item)}
                             >
-                                <Text>{data.item.name}</Text>
+                                <Text style={{fontSize: 16}}>{data.item.name}</Text>
                                 <Icon name={'angle-right'} size={18} color={'gray'} />
 
                             </TouchableOpacity>

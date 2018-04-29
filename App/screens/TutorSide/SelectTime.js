@@ -52,7 +52,7 @@ class SelectTime extends Component {
             <ScrollView>
               <Text style={styles.headerStyle}>Choose {this.state.student.weeklySessions} {this.state.student.weeklySessions > 1 ? 'Times' : 'Time'}</Text>
               {this.renderAvailability(this.state.availableTimes)}
-              <Button style={styles.standardButton} disabled={this.state.numChecked != this.state.student.weeklySessions} // want this enabled when count is valid, disabled when not
+              <Button buttonStyle={styles.standardButton} disabled={this.state.numChecked != this.state.student.weeklySessions} // want this enabled when count is valid, disabled when not
                     title={'Tutor Student at Selected Times'}
                     onPress={() => {
                       // only enabled when the correct number of times are selected
@@ -146,11 +146,10 @@ const styles = {
     standardButton: {
       marginTop: 20,
       backgroundColor: '#0093ff',
-      borderRadius: 30,
     },
     textStyle: {
       color: 'white',
-      fontSize: 14,
+      fontSize: 16,
     },
     headerStyle: {
       fontSize: 18,

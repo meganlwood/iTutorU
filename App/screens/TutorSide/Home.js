@@ -39,9 +39,18 @@ class TutorHome extends Component {
       if (subs == undefined) return '';
       if (subs.length == 1) return subs[0];
       subs.map((sub) => {
-        subjects = subjects + ", ";
+        subjects = subjects + ", " + sub;
       });
-      return subjects.substring(0, subjects.length-1);
+      return subjects.substring(2);
+    }
+
+    renderTimes(times) {
+      var t = '';
+      if (times.length == 1) return times[0];
+      times.map((time) => {
+        t = t + ", " + time;
+      });
+      return t.substring(2);
     }
 
     renderCards(students) {
@@ -61,9 +70,12 @@ class TutorHome extends Component {
         }
 
         return students.map((student) => {
+            console.log("STUDENT MAP");
+            console.log(student);
             return <Card title={`Your student: ${student.name}`}>
                 <Text style={styles.smallTextStyle}>Subject(s): {this.renderSubjects(student.subjects)}</Text>
                 <Text style={styles.smallTextStyle}>Address: {student.address}</Text>
+                <Text style={styles.smallTextStyle}>Time: {this.renderTimes(student.chosenTimes)}</Text>
 
                 <Button
                     buttonStyle={styles.buttonStyle}
