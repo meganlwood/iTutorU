@@ -25,6 +25,9 @@ class SelectStudent extends Component {
     }
 
     renderCards(students) {
+        console.log("render cards");
+        console.log(students);
+
         let relStudents = [];
 
         var x = this.props.subjects;

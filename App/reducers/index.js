@@ -2,7 +2,6 @@ import { combineReducers } from 'redux';
 
 import { CALENDAR, DATA_AVAILABLE, SIGN_IN_SUCCESS_TUTOR, SIGN_IN_FAIL, SIGN_IN_SUCCESS_PARENT, IS_SIGNED_IN, NOT_SIGNED_IN, TUTOR_DATA, PARENT_DATA, INCOMPLETE_PARENT_PROFILE, MESSAGES, LOADED_SUBJECTS, INCOMPLETE_TUTOR_PROFILE } from "../actions/"
 
-//let dataState = { uid: '', data: [], userType: '' };
 let authState = { signedIn: false, userType: '', loaded: false, error: '', subjects: [] };
 
 let tutorData =
@@ -60,7 +59,7 @@ const messagingReducer = (state = messageData, action) => {
             var newAll = state.allMessages;
             newAll[convoKey] = action.data;
             console.log(newAll);
-            return { ...state, allMessages: newAll, hasMessages: true };
+            return { allMessages: newAll, numMessages: newAll[convoKey].length };
         default:
             return state;
     }

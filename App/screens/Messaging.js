@@ -118,6 +118,7 @@ class Messaging extends Component {
 
 
     render() {
+        console.log(this.props.numMessages);
         return (
             <GiftedChat
                 messages={this.state.messages}
@@ -137,7 +138,7 @@ function mapStateToProps(state, props) {
     return {
         //data: state.dataReducer.data,
         messages: state.messagingReducer.allMessages,
-        hasMessages: state.messagingReducer.hasMessages,
+        numMessages: state.messagingReducer.numMessages,
     }
 }
 

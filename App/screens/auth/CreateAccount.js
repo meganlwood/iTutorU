@@ -66,7 +66,7 @@ class CreateAccount extends Component {
 
         if (this.state.errors.email == "" && this.state.errors.password == "") {
             createBlankParent(this.state.email, this.state.password).then(user => {
-                this.props.navigation.navigate('SignUpParent', { uid: user.uid, goBack: false });
+                this.props.navigation.navigate('SignUpParent', { uid: user, goBack: false });
             }).catch(error => {
                 this.state.errors.email = error;
                 this.state.loading = false;
@@ -86,7 +86,7 @@ class CreateAccount extends Component {
 
             createBlankTutor(this.state.email, this.state.password).then(user => {
                 console.log("should be navigating");
-                this.props.navigation.navigate('SignUpTutor', { uid: user.uid, goBack: false });
+                this.props.navigation.navigate('SignUpTutor', { uid: user, goBack: false });
             }).catch(error => {
                 console.log("there was an error");
                 console.log(error.message);
@@ -145,7 +145,7 @@ class CreateAccount extends Component {
 
                     <Button
                         buttonStyle={styles.button}
-                        title={"Sign up as Parent"}
+                        title={"Sign up as Parent/Student"}
                         onPress={() => this.onPressParent()}
                     />
                     <Button

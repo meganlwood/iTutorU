@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, KeyboardAvoidingView, ScrollView, Button as RNButton } from 'react-native';
-import {Button, Card, FormValidationMessage, ButtonGroup} from 'react-native-elements';
+import {Button, Card, FormValidationMessage, ButtonGroup, FormLabel} from 'react-native-elements';
 
 import * as Actions from "../../actions";
 import {bindActionCreators} from "redux";
@@ -249,7 +249,8 @@ class SignUpParent extends Component {
                     </Card>
 
 
-                    <Text style={{marginRight: 20, marginLeft: 20, color: 'gray', fontWeight: 'bold', fontSize: 16}}>How many sessions would you like each week?</Text>
+                    {/*}<Text style={{marginRight: 20, marginLeft: 20, color: 'gray', fontWeight: 'bold', fontSize: 16}}>How many sessions would you like each week?</Text> */}
+                    <FormLabel>How many sessions would you like each week?</FormLabel>
                     <ButtonGroup containerStyle={{marginTop: 10, marginBottom: 20, marginRight: 20, marginLeft: 20}}
                       onPress={(index) => {
                         this.setState({selectedIndex: index, weeklySess: index+1});
