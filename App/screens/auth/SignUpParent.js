@@ -250,7 +250,7 @@ class SignUpParent extends Component {
 
 
                     {/*}<Text style={{marginRight: 20, marginLeft: 20, color: 'gray', fontWeight: 'bold', fontSize: 16}}>How many sessions would you like each week?</Text> */}
-                    {/*
+
                     <FormLabel>How many sessions would you like each week?</FormLabel>
                     <ButtonGroup containerStyle={{marginTop: 10, marginBottom: 20, marginRight: 20, marginLeft: 20}}
                       onPress={(index) => {
@@ -259,7 +259,7 @@ class SignUpParent extends Component {
                       selectedIndex={this.state.selectedIndex}
                       buttons={['1', '2']}
                       />
-                    */}
+                    
                     <MultilineSimpleFormComponent
                         title={"Is there anything else you would like us to know about your student? (Learning style, etc)"}
                         onChangeText={(text) => this.setState({ otherInfo: text })}
