@@ -21,8 +21,11 @@ class LoginScreen extends Component {
     }
 
     onPressLogin() {
-        this.setState({ loading: true });
-        this.props.signInUser(this.state.email, this.state.password);
+        if (this.state.errors.email == '' && this.state.errors.password == '') {
+          this.setState({ loading: true });
+          this.props.signInUser(this.state.email, this.state.password);
+        }
+
     }
 
     onChangeEmail(text) {

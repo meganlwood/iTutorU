@@ -179,7 +179,7 @@ class SignUpTutor extends Component {
                         errorMessage={this.state.expError}
                     />
                     <SimpleFormComponent
-                        title={"What is your highest degree (and title) obtained? e.g. 'BS Computer Science'"}
+                        title={"What is your highest degree (and title) obtained? e.g. 'BS Computer Science' or 'Junior in College'"}
                         onChangeText={(text) => this.setState({ degree: text })}
                         secure={false}
                         keyboard={null}

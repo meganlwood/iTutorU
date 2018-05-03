@@ -31,7 +31,7 @@ import WebViewPage from './components/WebViewPage';
 import ChangeEmail from './screens/ChangeEmail';
 
 const TutorHomeStack = StackNavigator({
-    Home: { screen: TutorHome },
+    Home: { screen: TutorHome, navigationOptions: { title: "Home" } },
     Messaging: { screen: Messaging },
     SelectStudent: { screen: SelectStudent },
     SelectTime: { screen: SelectTime },
@@ -44,8 +44,8 @@ const TutorLearningPlanStack = StackNavigator({
 })
 
 const TutorSettingsStack = StackNavigator({
-    Settings: { screen: TutorSettings },
-    SelectStudent: { screen: SelectStudent },
+    Settings: { screen: TutorSettings, navigationOptions: { title: "Settings"}},
+    SelectStudent: { screen: SelectStudent, navigationOptions: { title: "Select A Student"}},
     SelectTime: { screen: SelectTime },
     WebView: { screen: WebViewPage }
 })
@@ -67,7 +67,7 @@ const SignUpStack = StackNavigator(
 );
 
 const ParentHomeStack = StackNavigator({
-    Home: { screen: ParentHome },
+    Home: { screen: ParentHome, navigationOptions: { title: "Home" } },
     Messaging: { screen: Messaging },
     SignUp: { screen: SignUpParent},
     SelectAvailability: { screen: SelectAvailability, tabBarHidden: true }
@@ -85,7 +85,7 @@ const SignUpNewStudentStack = StackNavigator({
 });
 
 const ParentSettingsStack = StackNavigator({
-    ParentSettingsHome: { screen: ParentSettings },
+    ParentSettingsHome: { screen: ParentSettings, navigationOptions: { title: "Settings" } },
     SignUpNewStudent: { screen: SignUpNewStudentStack },
     WebView: { screen: WebViewPage },
     ChangeEmail: { screen: ChangeEmail }
